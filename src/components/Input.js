@@ -3,7 +3,7 @@ import './Input.css';
 
 export class Input extends Component {
     handleChange(e) {
-        if( typeofthis.props.onUpdate === 'function')
+        if( typeof this.props.onUpdate === 'function')
         this.props.onUpdate(e.target.value);
         else
         console.err("Input Err: No onUpdate defined");
