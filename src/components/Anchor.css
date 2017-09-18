@@ -1,0 +1,36 @@
+@import '../colours.css';
+.anchor{
+    text-decoration: none;
+    -webkit-transition: .25s;
+    transition: .25s;
+    margin: 15px;
+    cursor: pointer;
+    color:var(--brand-secondary);
+    
+}
+.anchor:hover{
+    color:var(--brand);
+
+}
+.anchor.small{
+        font-size: 13px;
+}
+.anchor.block{
+    display: block;
+    width: 100%;
+}
+.anchor.primary{
+    background-color: var(--brand);
+}
+.anchor.success{
+    background-color: var(--success);
+}
+.anchor.warning{
+    background-color: var(--warning);
+}
+.anchor.error{
+    background-color: var(--error);
+}
+.anchor.info{
+    background-color: var(--info);
+}

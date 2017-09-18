@@ -1,0 +1,10 @@
+@import './colours.css';
+.login-form{
+background-color: var(--background-tertiary);
+width:250px;
+padding: 20px;
+position: relative;
+margin: auto;
+margin-top:150px;
+border-radius: 6px;
+}

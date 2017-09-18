@@ -1,0 +1,34 @@
+@import '../colours.css';
+.side-nav-link{
+    display: inline-block;
+    background-color: var(--background-quaternary);
+    width: 100%;
+    height:52px;
+    transition: .25s;
+    cursor: pointer;
+    text-decoration: none;
+    margin: -5px 0 -5px 0;
+
+}
+.side-nav-link-icon{
+    transition: .25s;
+    color:var(--text-secondary);
+    padding:14px;
+    font-size: 19px;
+    font-weight: 500;
+}
+.side-nav-link:hover{
+    background-color: var(--brand   );
+}
+.side-nav-link.active{
+    background-color: var(--brand-secondary);
+}
+.side-nav-link-text{
+        transition: .25s;
+        color:var(--text-secondary);
+        font-size: 19px;
+        font-weight: 500;
+        padding:14px;
+        
+
+}
