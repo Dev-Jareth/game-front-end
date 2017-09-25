@@ -6,7 +6,6 @@ export class SideNavLink extends Component {
     render() {
             
         let icon = this.props.icon?<label className={`side-nav-link-icon pull-right fa fa-${this.props.icon}`}></label>:null;
-        console.log(this.props);
         return (
             <li>
             <NavLink activeClassName="active" className="side-nav-link" exact={this.props.exact} to={this.props.to || '/'}>
