@@ -47,6 +47,7 @@ export default class Login extends Component {
                     error={this.state.error}
                     type="password"
                     icon="lock"
+                    onKeyPress = {this.handleEnterKey.bind(this)}
                     onUpdate={password => {this.setState({password});this.removeErr()}}>{this.state.password}</Input>
                 <Button
                     to={this.state.successTo}
