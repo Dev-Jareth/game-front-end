@@ -8,6 +8,9 @@ export class Input extends Component {
         else
         console.err("Input Err: No onUpdate defined");
     }
+    handleKeyPress(e){
+        if( this.props.onKeyPress) this.props.onKeyPress(e.key);
+    }
     determineInputType(){
         if(this.props.type==="password") return "password";
         else return "text";
@@ -26,7 +29,10 @@ export class Input extends Component {
                     value={this.props.value||this.props.children||""}
                     placeholder={this.props.placeholder}
                     onChange={this
-                    .handleChange
+                        .handleChange
+                        .bind(this)}
+                        onKeyPress={this
+                    .handleKeyPress
                     .bind(this)}
                     disabled={this.props.disabled}
                     readOnly={this.props.readOnly}
