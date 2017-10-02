@@ -3,10 +3,11 @@ import './Input.css';
 
 export class Input extends Component {
     handleChange(e) {
-        if( typeof this.props.onUpdate === 'function')
+        try{
         this.props.onUpdate(e.target.value);
-        else
-        console.err("Input Err: No onUpdate defined");
+        } catch(e){
+            throw new Error("onUpdate from Input is not a function");
+        }
     }
     handleKeyPress(e){
         if( this.props.onKeyPress) this.props.onKeyPress(e.key);
