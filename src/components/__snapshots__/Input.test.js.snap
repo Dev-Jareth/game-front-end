@@ -1,184 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Input Field accepts an onUpdate function 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
+Array [
+  Array [
+    "H",
+  ],
+]
 `;
 
-exports[`Input Field can disable 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null disabled"
-    disabled={true}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field can have type 1`] = `"text"`;
 
-exports[`Input Field can disable 2`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null disabled"
-    disabled={true}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field can have type 2`] = `"password"`;
 
-exports[`Input Field can error 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control error null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field correctly has disable display 1`] = `false`;
 
-exports[`Input Field can error 2`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control error null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field correctly has disable display 2`] = `undefined`;
 
-exports[`Input Field can have type 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field correctly has disable display 3`] = `false`;
 
-exports[`Input Field can have type 2`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="password"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field correctly has disable display 4`] = `false`;
 
-exports[`Input Field can success 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null success null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field correctly has disable display 5`] = `true`;
 
-exports[`Input Field can success 2`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null success null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
+exports[`Input Field correctly has disable display 6`] = `true`;
+
+exports[`Input Field correctly has disable display 7`] = `true`;
+
+exports[`Input Field correctly has disable display 8`] = `true`;
+
+exports[`Input Field correctly has error display 1`] = `false`;
+
+exports[`Input Field correctly has error display 2`] = `false`;
+
+exports[`Input Field correctly has error display 3`] = `true`;
+
+exports[`Input Field correctly has error display 4`] = `true`;
+
+exports[`Input Field correctly has success display 1`] = `false`;
+
+exports[`Input Field correctly has success display 2`] = `false`;
+
+exports[`Input Field correctly has success display 3`] = `true`;
+
+exports[`Input Field correctly has success display 4`] = `true`;
 
 exports[`Input Field has a placeholder 1`] = `
 <div
@@ -191,6 +55,7 @@ exports[`Input Field has a placeholder 1`] = `
     id="login-name"
     maxLength={undefined}
     onChange={[Function]}
+    onKeyPress={[Function]}
     placeholder="placeholder"
     readOnly={undefined}
     required={undefined}
@@ -211,6 +76,7 @@ exports[`Input Field has a value 1`] = `
     id="login-name"
     maxLength={undefined}
     onChange={[Function]}
+    onKeyPress={[Function]}
     placeholder={undefined}
     readOnly={undefined}
     required={undefined}
@@ -231,6 +97,7 @@ exports[`Input Field has an FA icon 1`] = `
     id="login-name"
     maxLength={undefined}
     onChange={[Function]}
+    onKeyPress={[Function]}
     placeholder={undefined}
     readOnly={undefined}
     required={undefined}
@@ -240,26 +107,6 @@ exports[`Input Field has an FA icon 1`] = `
   <label
     className="input-icon fa fa-gear"
     htmlFor="login-name"
-  />
-</div>
-`;
-
-exports[`Input Field rejects onUpdate non-function 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
   />
 </div>
 `;
@@ -275,6 +122,7 @@ exports[`Input Field renders 1`] = `
     id="login-name"
     maxLength={undefined}
     onChange={[Function]}
+    onKeyPress={[Function]}
     placeholder={undefined}
     readOnly={undefined}
     required={undefined}
