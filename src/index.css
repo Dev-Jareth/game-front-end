@@ -6,7 +6,7 @@ body {
   color: var(--text);
   background: var(--background);
 }
-.disabled{
+:disabled{
   cursor:not-allowed;
 }
 .clearfix:after {

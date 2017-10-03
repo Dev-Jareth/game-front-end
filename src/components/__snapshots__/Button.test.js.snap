@@ -4,7 +4,7 @@ exports[`Button accepts an onUpdate function 1`] = `1`;
 
 exports[`Button renders 1`] = `
 <a
-  className="button  null null null null null null null null"
+  className="button  null null null null null null null"
   disabled={undefined}
   href="/"
   onClick={[Function]}

@@ -44,13 +44,9 @@ describe('Input Field',()=>{
     expect(shallow(<Input success={true} />).find('input').hasClass('success')).toBe(true);
   });
   it('correctly has disable display',()=>{
-    expect(shallow(<Input />).find('input').hasClass('disabled')).toBe(false);
     expect(shallow(<Input />).find('input').props()['disabled']).toBeFalsy();
-    expect(shallow(<Input disabled={false} />).find('input').hasClass('dissabled')).toBe(false);
     expect(shallow(<Input disabled={false} />).find('input').props()['disabled']).toBeFalsy();
-    expect(shallow(<Input disabled />).find('input').hasClass('disabled')).toBe(true);
     expect(shallow(<Input disabled />).find('input').props()['disabled']).toBe(true);
-    expect(shallow(<Input disabled={true} />).find('input').hasClass('disabled')).toBe(true);
     expect(shallow(<Input disabled={true} />).find('input').props()['disabled']).toBe(true);
   })
   it('can have type',()=>{

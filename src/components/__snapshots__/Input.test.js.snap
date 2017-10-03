@@ -8,22 +8,6 @@ Array [
 ]
 `;
 
-exports[`Input Field correctly has disable display 1`] = `false`;
-
-exports[`Input Field correctly has disable display 2`] = `undefined`;
-
-exports[`Input Field correctly has disable display 3`] = `false`;
-
-exports[`Input Field correctly has disable display 4`] = `false`;
-
-exports[`Input Field correctly has disable display 5`] = `true`;
-
-exports[`Input Field correctly has disable display 6`] = `true`;
-
-exports[`Input Field correctly has disable display 7`] = `true`;
-
-exports[`Input Field correctly has disable display 8`] = `true`;
-
 exports[`Input Field has an FA icon 1`] = `
 <div
   className="input-group"

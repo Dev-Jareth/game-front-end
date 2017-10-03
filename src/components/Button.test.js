@@ -45,13 +45,9 @@ describe('Button',()=>{
     expect(shallow(<Button block={true} />).hasClass('block')).toBe(true);
   });
   it('correctly has disable display',()=>{
-    expect(shallow(<Button />).hasClass('disabled')).toBe(false);
     expect(shallow(<Button />).props()['disabled']).toBeFalsy();
-    expect(shallow(<Button disabled={false} />).hasClass('dissabled')).toBe(false);
     expect(shallow(<Button disabled={false} />).props()['disabled']).toBeFalsy();
-    expect(shallow(<Button disabled />).hasClass('disabled')).toBe(true);
     expect(shallow(<Button disabled />).props()['disabled']).toBe(true);
-    expect(shallow(<Button disabled={true} />).hasClass('disabled')).toBe(true);
     expect(shallow(<Button disabled={true} />).props()['disabled']).toBe(true);
   })
   it('accepts an onUpdate function',()=>{
