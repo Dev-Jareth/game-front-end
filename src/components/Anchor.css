@@ -12,6 +12,12 @@
     color:var(--brand);
 
 }
+.anchor.huge{
+    font-size:22px;
+}
+.anchor.large{
+    font-size:17px;
+}
 .anchor.small{
         font-size: 13px;
 }

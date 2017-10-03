@@ -4,8 +4,8 @@ import './Anchor.css';
 
 export class Anchor extends Component {
     getSize(){
-        if(this.props.size === "small") return "small";
-        else return "";
+        let acceptableSizes=['huge','large','small'];
+        return acceptableSizes.find(size=>this.props.size===size) || '';
     }
     render() {
         let hasPrimary = this.props.primary?"primary":null;
