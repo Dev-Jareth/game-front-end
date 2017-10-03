@@ -15,9 +15,10 @@ export class Button extends Component {
         let hasInfo = this.props.info?"info":null;
         let hasBlock = this.props.block?"block":null;
         let hasWide = this.props.wide?"wide":null;
+        let hasDisabled = this.props.disabled?'disabled':null;
 
         return (
-            <Link to={this.props.to || '/'} onClick={this.props.onClick} className={`button ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} ${hasBlock} ${hasWide} `}>{this.props.children}</Link>
+            <Link to={this.props.to || '/'} onClick={this.props.onClick} disabled={this.props.disabled} className={`button ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} ${hasBlock} ${hasWide} ${hasDisabled}`}>{this.props.children}</Link>
         )
     }
 }
