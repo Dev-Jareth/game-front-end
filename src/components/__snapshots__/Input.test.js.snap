@@ -8,10 +8,6 @@ Array [
 ]
 `;
 
-exports[`Input Field can have type 1`] = `"text"`;
-
-exports[`Input Field can have type 2`] = `"password"`;
-
 exports[`Input Field correctly has disable display 1`] = `false`;
 
 exports[`Input Field correctly has disable display 2`] = `undefined`;
@@ -28,71 +24,13 @@ exports[`Input Field correctly has disable display 7`] = `true`;
 
 exports[`Input Field correctly has disable display 8`] = `true`;
 
-exports[`Input Field correctly has error display 1`] = `false`;
-
-exports[`Input Field correctly has error display 2`] = `false`;
-
-exports[`Input Field correctly has error display 3`] = `true`;
-
-exports[`Input Field correctly has error display 4`] = `true`;
-
-exports[`Input Field correctly has success display 1`] = `false`;
-
-exports[`Input Field correctly has success display 2`] = `false`;
-
-exports[`Input Field correctly has success display 3`] = `true`;
-
-exports[`Input Field correctly has success display 4`] = `true`;
-
-exports[`Input Field has a placeholder 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    onKeyPress={[Function]}
-    placeholder="placeholder"
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value=""
-  />
-</div>
-`;
-
-exports[`Input Field has a value 1`] = `
-<div
-  className="input-group"
->
-  <input
-    autoFocus={undefined}
-    className="input-control null null null"
-    disabled={undefined}
-    id="login-name"
-    maxLength={undefined}
-    onChange={[Function]}
-    onKeyPress={[Function]}
-    placeholder={undefined}
-    readOnly={undefined}
-    required={undefined}
-    type="text"
-    value="value"
-  />
-</div>
-`;
-
 exports[`Input Field has an FA icon 1`] = `
 <div
   className="input-group"
 >
   <input
     autoFocus={undefined}
-    className="input-control null null null"
+    className="input-control null null"
     disabled={undefined}
     id="login-name"
     maxLength={undefined}
@@ -117,7 +55,7 @@ exports[`Input Field renders 1`] = `
 >
   <input
     autoFocus={undefined}
-    className="input-control null null null"
+    className="input-control null null"
     disabled={undefined}
     id="login-name"
     maxLength={undefined}
