@@ -14,11 +14,28 @@
     color:var(--text-secondary);
     
 }
+.button.huge{
+    padding: 13px 20px;
+    font-size: 22px;
+    line-height: 1.227;
+    border-radius: 6px;
+}
 .button.large{
     padding: 10px 19px;
     font-size: 17px;
     line-height: 1.471;
     border-radius: 6px;
+}
+.button.small{
+    padding: 7px 10px;
+    font-size: 13px;
+    /* line-height: 1.471; */
+    border-radius: 6px;
+}
+.button.wide{
+    min-width: 140px;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 .button.block{
     display: block;

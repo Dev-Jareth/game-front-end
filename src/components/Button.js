@@ -4,8 +4,8 @@ import './Button.css';
 
 export class Button extends Component {
     getSize(){
-        if(this.props.size === "large") return "large";
-        else return "";
+        let acceptableSizes=['huge','large','small'];
+        return acceptableSizes.find(size=>this.props.size===size) || '';
     }
     render() {
         let hasPrimary = this.props.primary?"primary":null;
@@ -14,9 +14,10 @@ export class Button extends Component {
         let hasError = this.props.error||this.props.danger?"error":null;
         let hasInfo = this.props.info?"info":null;
         let hasBlock = this.props.block?"block":null;
+        let hasWide = this.props.wide?"wide":null;
 
         return (
-            <Link to={this.props.to || '/'} onClick={this.props.onClick} className={`button ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} ${hasBlock} `}>{this.props.children}</Link>
+            <Link to={this.props.to || '/'} onClick={this.props.onClick} className={`button ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} ${hasBlock} ${hasWide} `}>{this.props.children}</Link>
         )
     }
 }
