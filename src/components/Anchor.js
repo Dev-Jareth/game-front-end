@@ -15,7 +15,7 @@ export class Anchor extends Component {
         let hasInfo = this.props.info?"info":null;
 
         return (
-            <Link onClick={this.props.onClick} to={this.props.to ||"/"} className={`anchor ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} `}>{this.props.children}</Link>
+            <Link onClick={this.props.onClick} to={this.props.to ||"/"} disabled={this.props.disabled} className={`anchor ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} `}>{this.props.children}</Link>
         )
     }
 }

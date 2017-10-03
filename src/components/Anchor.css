@@ -21,6 +21,9 @@
 .anchor.small{
         font-size: 13px;
 }
+.anchor:disabled{
+    color:var(--disabled)
+}
 .anchor.block{
     display: block;
     width: 100%;
