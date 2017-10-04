@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './SideNav.css';
-import {SideNavLink} from './'
+import {SideNavLink} from '../'
 
 export class SideNav extends Component {
     render() {

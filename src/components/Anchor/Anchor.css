@@ -1,4 +1,4 @@
-@import '../colours.css';
+@import '../../colours.css';
 .anchor{
     text-decoration: none;
     -webkit-transition: .25s;

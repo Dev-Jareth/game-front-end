@@ -1,4 +1,4 @@
-@import '../colours.css';
+@import '../../colours.css';
 .side-nav{
     background-color: var(--background-secondary);
     display: inline-block;
