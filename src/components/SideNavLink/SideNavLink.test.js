@@ -2,7 +2,6 @@ import React from 'react';
 import Renderer from 'react-test-renderer';
 import Enzyme, {shallow, mount, render} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
-import {MemoryRouter as R} from 'react-router-dom';
 Enzyme.configure({ adapter: new Adapter() })
 import {SideNavLink} from './';
 
