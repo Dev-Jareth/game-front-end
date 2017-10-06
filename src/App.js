@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
 import './App.css';
-import Login from './Login';
-import Home from './Home';
+import {Login, Home} from './pages';
 import Settings from './Settings';
 import {SideNav} from './components';
 

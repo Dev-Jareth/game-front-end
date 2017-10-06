@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './Login.css';
-import {Anchor, Button, Input} from './components'
+import {Anchor, Button, Input} from '../../components'
 
-export default class Login extends Component {
+export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
