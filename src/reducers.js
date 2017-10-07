@@ -9,6 +9,10 @@ const userReducer = (state={user:null,badCredentials:false},action)=>{
             state = {...state, user:null, badCredentials:true}
             break;
         }
+        case Type.User.logout:{
+            state = {...state, user:null};
+            break;
+        }
         default: break;
     }
     return state;
