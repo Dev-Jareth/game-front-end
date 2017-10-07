@@ -1,48 +1,68 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
+import {connect} from 'react-redux';
 import './App.css';
 import {Login, Home} from './pages';
 import Settings from './Settings';
 import {SideNav} from './components';
+import * as Action from './actions';
 
+const mapStateToProps = store => {
+  return {user: store.user}
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (username, password) => {
+      dispatch({
+        type: "USER_LOGIN",
+        payload: {
+          username,
+          password
+        }
+      })
+    }
+  }
+};
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      user: null,
-      links:[{
-        to: '/',
-        exact:true,
-        icon: 'home',
-        content: 'Home',
-        component: Home
-      },{
-        to: '/settings',
-        icon: 'gear',
-        content: 'Settings',
-        component: Settings
-      },
-    ]
+      links: [
+        {
+          to: '/',
+          exact: true,
+          icon: 'home',
+          content: 'Home',
+          component: Home
+        }, {
+          to: '/settings',
+          icon: 'gear',
+          content: 'Settings',
+          component: Settings
+        }
+      ]
     };
   }
-  login(user) {
-    this.setState({user});
-  }
   isLoggedIn() {
-    return Boolean(this.state.user);
+    return Boolean(this.props.user.user);
     // return true;
+  }
+  login(username,password){
+    this.props.dispatch(Action.User.login(username,password))
   }
   render() {
     let allowed = this.isLoggedIn();
+    console.log("APP Props:", this.props)
     return (
       <Router>
         <div className="App">
           <Switch>
             <Route
               path="/login"
-              render={(props) => (<Login {...props} login={this
-              .login
-              .bind(this)}/>)}/>
+              render={(props) => (<Login
+              {...props}
+              badLogin={this.props.user.badCredentials}
+              login={this.login.bind(this)}/>)}/>
             <PrivateRoute
               path="/"
               component={Navigaton}
@@ -59,7 +79,18 @@ class App extends Component {
 const Navigaton = props => {
   let routes = props
     .links
-    .map(route =><Route key={route.to} path={route.to} exact={route.exact} component={route.component} />)
+    .map(route =>< Route key = {
+      route.to
+    }
+    path = {
+      route.to
+    }
+    exact = {
+      route.exact
+    }
+    component = {
+      route.component
+    } />)
   return (
     <span>
       <SideNav match={props.match} links={props.links}/> {routes}
@@ -67,7 +98,7 @@ const Navigaton = props => {
   )
 }
 
-export default App;
+export default connect(mapStateToProps)(App);
 const PrivateRoute = ({
   component: Component,
   allowed,

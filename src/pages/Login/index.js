@@ -8,18 +8,14 @@ export class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            error: false,
+            error: this.props.badLogin,
             successTo:"/"
         };
     }
     handleLoginRequest(e) {
-        if (this.state.username === "Username" && this.state.password === "password") {
-            this.props.login(this.state.username);
+            this.props.login(this.state.username,this.state.password);
             e?void(0):this.props.history.push(this.state.successTo);
-        } else {
-            e?e.preventDefault() : void(0);
-            this.setState({error: true,username:'',password:''});
-        }
+        
     }
     handleEnterKey(key){
         if(key === "Enter")
