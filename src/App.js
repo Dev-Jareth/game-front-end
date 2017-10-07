@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom
 import {connect} from 'react-redux';
 import './App.css';
 import {Login, Home} from './pages';
-import Settings from './Settings';
 import {SideNav} from './components';
 import * as Action from './actions';
 
@@ -38,7 +37,7 @@ class App extends Component {
           to: '/settings',
           icon: 'gear',
           content: 'Settings',
-          component: Settings
+          component: null
         }
       ]
     };
