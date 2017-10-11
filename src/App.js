@@ -9,19 +9,6 @@ import * as Action from './actions';
 const mapStateToProps = store => {
   return {user: store.user}
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    login: (username, password) => {
-      dispatch({
-        type: "USER_LOGIN",
-        payload: {
-          username,
-          password
-        }
-      })
-    }
-  }
-};
 class App extends Component {
   constructor() {
     super();
