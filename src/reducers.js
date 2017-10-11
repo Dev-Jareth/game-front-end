@@ -3,8 +3,12 @@ import {Type} from './actions';
 const userReducer = (state={user:null,badCredentials:false},action)=>{
     switch(action.type){
         case Type.User.login:{
-            if(action.payload.username === "Username" && action.payload.password === "password")
-            state = {...state, user: action.payload.username, badCredentials:false};
+            console.log('Checking Details');
+            break;
+        }
+        case Type.User.login+'_FULFILLED':{
+            if(action.payload.user)
+            state = {...state, user: action.payload.user, badCredentials:false};
             else
             state = {...state, user:null, badCredentials:true}
             break;

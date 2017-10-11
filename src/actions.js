@@ -6,11 +6,16 @@ export const Type = {
 }
 export const User = {
     login: (username, password) => ({
-            type: Type.User.login,
-            payload: {
-                username,
-                password
-            }
-        }),
-    logout: ()=>({type:Type.User.logout})
+        type: Type.User.login,
+        payload: fetch('http://localhost:3001/users/login', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify({username, password})
+        }).then(res => res.json())
+
+    }),
+    logout: () => ({type: Type.User.logout})
 }
