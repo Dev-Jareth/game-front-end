@@ -1,4 +1,7 @@
 import {combineReducers} from 'redux';
+
+import {routerReducer} from 'react-router-redux';
+
 import {Type} from './actions';
 const userReducer = (state={user:null,badCredentials:false},action)=>{
     switch(action.type){
@@ -23,5 +26,6 @@ const userReducer = (state={user:null,badCredentials:false},action)=>{
 };
 
 export default combineReducers({
-    user:userReducer
+    user:userReducer,
+    router:routerReducer,
 })

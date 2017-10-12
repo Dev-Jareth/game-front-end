@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
+import {Route, Redirect, Switch} from 'react-router-dom';
+import {ConnectedRouter as Router} from 'react-router-redux';
 import {connect} from 'react-redux';
 import './App.css';
 import {Login, Home} from './pages';
@@ -31,16 +32,14 @@ class App extends Component {
   }
   isLoggedIn() {
     return Boolean(this.props.user.user);
-    // return true;
   }
   login(username,password){
     this.props.dispatch(Action.User.login(username,password))
   }
   render() {
     let allowed = this.isLoggedIn();
-    console.log("APP Props:", this.props)
     return (
-      <Router>
+      <Router history={this.props.history}>
         <div className="App">
           <Switch>
             <Route
