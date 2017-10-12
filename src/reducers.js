@@ -3,29 +3,56 @@ import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 
 import {Type} from './actions';
-const userReducer = (state={user:null,badCredentials:false},action)=>{
-    switch(action.type){
-        case Type.User.login:{
-            console.log('Checking Details');
+const pending = type=>type+'_PENDING';
+const fulfilled = type=>type+'_FULFILLED';
+const rejected = type=>type+'_REJECTED';
+
+let userInitState = {
+    user: null,
+    badCredentials: false,
+    goodCredentials: false
+};
+const userReducer = (state = userInitState, action) => {
+    switch (action.type) {
+        case pending(Type.User.login):
+            {
+                //Login Begins
+                state = {
+                    ...state,
+                    badCredentials: false,
+                    goodCredentials: false,
+                }
+                break;
+            }
+        case fulfilled(Type.User.login):
+            {
+                if (action.payload.user) 
+                    //Login Success
+                    state = {
+                        ...state,
+                        user: action.payload.user,
+                        goodCredentials: true
+                    };
+                else 
+                    //Login Failed
+                    state = {
+                        ...state,
+                        user: null,
+                        badCredentials: true
+                    }
+                break;
+            }
+        case Type.User.logout:
+            {
+                state = {
+                    ...userInitState
+                };
+                break;
+            }
+        default:
             break;
-        }
-        case Type.User.login+'_FULFILLED':{
-            if(action.payload.user)
-            state = {...state, user: action.payload.user, badCredentials:false};
-            else
-            state = {...state, user:null, badCredentials:true}
-            break;
-        }
-        case Type.User.logout:{
-            state = {...state, user:null};
-            break;
-        }
-        default: break;
     }
     return state;
 };
 
-export default combineReducers({
-    user:userReducer,
-    router:routerReducer,
-})
+export default combineReducers({user: userReducer, router: routerReducer})

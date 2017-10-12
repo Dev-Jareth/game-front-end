@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Login.css';
 import {Anchor, Button, Input} from '../../components'
+import {push} from 'react-router-redux';
 
 export class Login extends Component {
     constructor(props) {
@@ -8,21 +9,23 @@ export class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            error: this.props.badLogin,
-            successTo:"/"
+            successTo:"/",
+            errOverride:false
         };
     }
-    handleLoginRequest(e) {
-            this.props.login(this.state.username,this.state.password);
-            e?void(0):this.props.history.push(this.state.successTo);
-        
+    componentWillUpdate(nextProps){
+        if(nextProps.goodLogin) this.props.dispatch(push('/'));
     }
+    handleLoginRequest(e) {
+        this.props.login(this.state.username,this.state.password);
+        this.setState({errOverride:false});
+        e?e.preventDefault():void(0);
+    }
+    isErr=()=>this.props.badLogin & !this.state.errOverride;
+    removeErr=()=>this.setState({errOverride:true});
     handleEnterKey(key){
         if(key === "Enter")
         this.handleLoginRequest();
-    }
-    removeErr(){
-        this.setState({error:false});
     }
     render() {
         return (
@@ -34,17 +37,17 @@ export class Login extends Component {
                 </span>
                 <Input
                     placeholder="Username"
-                    error={this.state.error}
+                    error={this.isErr()}
                     icon="user"
                     onKeyPress = {this.handleEnterKey.bind(this)}
-                    onUpdate={username => {this.setState({username});this.removeErr()}}>{this.state.username}</Input>
+                    onUpdate={username => {this.setState({username});this.removeErr();}}>{this.state.username}</Input>
                 <Input
                     placeholder="Password"
-                    error={this.state.error}
+                    error={this.isErr()}
                     type="password"
                     icon="lock"
                     onKeyPress = {this.handleEnterKey.bind(this)}
-                    onUpdate={password => {this.setState({password});this.removeErr()}}>{this.state.password}</Input>
+                    onUpdate={password => {this.setState({password});this.removeErr();}}>{this.state.password}</Input>
                 <Button
                     to={this.state.successTo}
                     size="large"

@@ -47,6 +47,8 @@ class App extends Component {
               render={(props) => (<Login
               {...props}
               badLogin={this.props.user.badCredentials}
+              goodLogin={this.props.user.goodCredentials}
+              dispatch={this.props.dispatch}
               login={this.login.bind(this)}/>)}/>
             <PrivateRoute
               path="/"
