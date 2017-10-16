@@ -28,6 +28,7 @@ export class Login extends Component {
         this.handleLoginRequest();
     }
     render() {
+        console.log(this.props)
         return (
             <div className="login-form">
                 <span className="clearfix">
@@ -53,6 +54,7 @@ export class Login extends Component {
                     size="large"
                     block
                     primary
+                    pending={this.props.pendingResponse}
                     onClick={this
                     .handleLoginRequest
                     .bind(this)}>Login</Button>

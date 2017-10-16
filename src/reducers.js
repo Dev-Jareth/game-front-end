@@ -3,14 +3,15 @@ import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 
 import {Type} from './actions';
-const pending = type=>type+'_PENDING';
-const fulfilled = type=>type+'_FULFILLED';
-const rejected = type=>type+'_REJECTED';
+const pending = type => type + '_PENDING';
+const fulfilled = type => type + '_FULFILLED';
+const rejected = type => type + '_REJECTED';
 
 let userInitState = {
     user: null,
     badCredentials: false,
-    goodCredentials: false
+    goodCredentials: false,
+    pending: false
 };
 const userReducer = (state = userInitState, action) => {
     switch (action.type) {
@@ -21,11 +22,16 @@ const userReducer = (state = userInitState, action) => {
                     ...state,
                     badCredentials: false,
                     goodCredentials: false,
+                    pending: true
                 }
                 break;
             }
         case fulfilled(Type.User.login):
             {
+                state = {
+                    ...state,
+                    pending: false
+                }
                 if (action.payload.user) 
                     //Login Success
                     state = {

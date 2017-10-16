@@ -16,8 +16,10 @@ export class Button extends Component {
         let hasBlock = this.props.block?"block":null;
         let hasWide = this.props.wide?"wide":null;
 
+        let pending = <i className="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>;
+
         return (
-            <Link to={this.props.to || '/'} onClick={this.props.onClick} disabled={this.props.disabled} className={`button ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} ${hasBlock} ${hasWide}`}>{this.props.children}</Link>
+            <Link to={this.props.to || '/'} onClick={this.props.onClick} disabled={this.props.disabled} className={`button ${this.getSize()} ${hasPrimary} ${hasSuccess} ${hasWarning} ${hasError} ${hasInfo} ${hasBlock} ${hasWide}`}>{this.props.pending?pending:this.props.children}</Link>
         )
     }
 }

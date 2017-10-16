@@ -48,6 +48,7 @@ class App extends Component {
               {...props}
               badLogin={this.props.user.badCredentials}
               goodLogin={this.props.user.goodCredentials}
+              pendingResponse={this.props.user.pending}
               dispatch={this.props.dispatch}
               login={this.login.bind(this)}/>)}/>
             <PrivateRoute
