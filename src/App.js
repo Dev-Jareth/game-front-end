@@ -10,7 +10,7 @@ import * as Action from './actions';
 const mapStateToProps = store => {
   return {user: store.user}
 };
-class App extends Component {
+export class App extends Component {
   constructor() {
     super();
     this.state = {
