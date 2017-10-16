@@ -29,13 +29,9 @@ export class App extends Component {
       ]
     };
   }
-  isLoggedIn() {
-    return Boolean(this.props.user.user);
-  }
-  login(username,password){
-    this.props.dispatch(Action.User.login(username,password))
-  }
-  render() {
+  isLoggedIn = ()=> Boolean(this.props.user.user);
+  login = (username,password)=>this.props.dispatch(Action.User.login(username,password));
+  render = () => {
     let allowed = this.isLoggedIn();
     return (
         <div className="App">
