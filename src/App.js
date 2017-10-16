@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
-import {ConnectedRouter as Router} from 'react-router-redux';
 import {connect} from 'react-redux';
 import './App.css';
 import {Login, Home} from './pages';
@@ -39,7 +38,6 @@ export class App extends Component {
   render() {
     let allowed = this.isLoggedIn();
     return (
-      <Router history={this.props.history}>
         <div className="App">
           <Switch>
             <Route
@@ -59,7 +57,6 @@ export class App extends Component {
             <Redirect to="/"/>
           </Switch>
         </div>
-      </Router>
     );
   }
 }
