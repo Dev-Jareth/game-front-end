@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
+import {ConnectedRouter as Router} from 'react-router-redux';
 import {connect} from 'react-redux';
 import './App.css';
 import {Login, Home} from './pages';
@@ -35,6 +36,7 @@ export class App extends Component {
     let allowed = this.isLoggedIn();
     return (
         <div className="App">
+          <Router history={this.props.history}>
           <Switch>
             <Route
               path="/login"
@@ -52,6 +54,7 @@ export class App extends Component {
               allowed={allowed}/>
             <Redirect to="/"/>
           </Switch>
+          </Router>
         </div>
     );
   }
