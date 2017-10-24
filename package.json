@@ -15,7 +15,8 @@
     "react-test-renderer": "^15.6.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-promise-middleware": "^4.4.1"
+    "redux-promise-middleware": "^4.4.1",
+    "three": "^0.87.1"
   },
   "scripts": {
     "start": "react-scripts start",
