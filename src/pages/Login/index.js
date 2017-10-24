@@ -12,9 +12,8 @@ export class Login extends Component {
       successTo: "/",
       errOverride: false
     };
-  }
-  componentWillUpdate = nextProps => nextProps.goodLogin ? this.props.dispatch(push("/")) : void(0);
   };
+  componentWillUpdate = nextProps => nextProps.goodLogin ? this.props.dispatch(push("/")) : void(0);
   handleLoginRequest = e => {
     this.props.login(this.state.username, this.state.password);
     this.setState({ errOverride: false });
