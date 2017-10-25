@@ -37,7 +37,7 @@ export class Home extends Component {
     this.scene.add(this.player);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     console.log(this.keyboard);
-    this.scene.add(new ParticleCloud());
+    this.scene.add(new ParticleCloud(100000));
     // this.loader.load("./Fighter SF2 N300707.json", obj => console.log(obj));
     // setTimeout(()=>this.material.color = 0x0000ff,3000)
   }
