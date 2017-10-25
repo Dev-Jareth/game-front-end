@@ -44,12 +44,14 @@ export class Home extends Component {
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
     let damperStrength = 5 / 100;
+    let accelStrength = 5 / 100;
+    let maxSpeed = 5;
     // console.log(w.pressed);
 
-    if (w.pressed) w.rate = 1;
+    if (w.pressed) w.rate = Math.min(maxSpeed, Math.max(1, w.rate + accelStrength));
     else w.rate = Math.max(0, w.rate - damperStrength);
     this.player.translateZ(-w.rate);
-    if (s.pressed) s.rate = 1;
+    if (s.pressed) s.rate = Math.min(maxSpeed, Math.max(1, s.rate + accelStrength));
     else s.rate = Math.max(0, s.rate - damperStrength);
     this.player.translateZ(s.rate);
     if (a.pressed) a.rate = 1;
@@ -60,16 +62,16 @@ export class Home extends Component {
     this.player.rotateZ(d.rate * -0.01);
     if (q.pressed) q.rate = 1;
     else q.rate = Math.max(0, q.rate - damperStrength);
-    this.player.rotateY(q.rate * 0.01);
+    this.player.rotateY(q.rate * 0.008);
     if (e.pressed) e.rate = 1;
     else e.rate = Math.max(0, e.rate - damperStrength);
-    this.player.rotateY(e.rate * -0.01);
+    this.player.rotateY(e.rate * -0.008);
     if (space.pressed) space.rate = 1;
     else space.rate = Math.max(0, space.rate - damperStrength);
     this.player.rotateX(space.rate * 0.01);
     if (shift.pressed) shift.rate = 1;
     else shift.rate = Math.max(0, shift.rate - damperStrength);
-    this.player.rotateX(shift.rate* - 0.01);
+    this.player.rotateX(shift.rate * -0.01);
   };
   _keyDown = e => {
     let key = e.key === " " ? "space" : e.key.toLowerCase();
