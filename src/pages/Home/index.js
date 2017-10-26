@@ -23,18 +23,18 @@ export class Home extends Component {
     // this.mesh2.position.z = -300;
     let light = new THREE.PointLight(0x404040);
     light.position.z = 1000;
-    let planetObj = new Planet(2000, 300);
-    let planet = planetObj.objects
-    planetObj.animate();
-    planet.position.z = -1000
+    let planet = new Planet(200, 30);
+    // let planet = planetObj.objects
+    // planetObj.animate();
+    planet.position.z = -600
     this.scene.add(planet);
     this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
     this.camera.position.z = 600;
     this.camera.position.y = 200;
-    this.loader = new THREE.BufferGeometryLoader();
+    this.loader = new THREE.JSONLoader();
     this.player.add(this.camera);
     this.scene.add(this.player);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
