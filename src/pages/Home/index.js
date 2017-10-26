@@ -17,17 +17,11 @@ export class Home extends Component {
       color: 0xffa0a0
     });
     this.mesh = new THREE.Mesh(geometry, material);
-    // this.mesh2 = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
-    // this.mesh2.position.x = -300;
-    // this.mesh2.position.y = -300;
-    // this.mesh2.position.z = -300;
     let light = new THREE.PointLight(0x404040);
     light.position.z = 1000;
-    let planet = new Planet(200, 30);
-    // let planet = planetObj.objects
-    // planetObj.animate();
-    planet.position.z = -600
-    this.scene.add(planet);
+    let earth = new Planet(6371, 1737,384400);
+    earth.position.z = -1500;
+    this.scene.add(earth);
     this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -38,24 +32,15 @@ export class Home extends Component {
     this.player.add(this.camera);
     this.scene.add(this.player);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
-    console.log(this.keyboard);
     this.scene.add(new ParticleCloud(10000));
     this.loader.load("./models/ship.json", this.handleLoadJson);
-    // setTimeout(()=>this.material.color = 0x0000ff,3000)
   }
-  handleLoadJson = (geo, mat) => {
-    let loader = new THREE.MaterialLoader();
-    console.log("Mat",mat)
-    this.player.add(new THREE.Mesh(geo, mat));
-    console.log("Loaded")
-    
-  };
+  handleLoadJson = (geo, mat) => this.player.add(new THREE.Mesh(geo, mat));
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
     let damperStrength = 5 / 100;
     let accelStrength = 5 / 100;
     let maxSpeed = 5;
-    // console.log(w.pressed);
 
     if (w.pressed) w.rate = Math.min(maxSpeed, Math.max(1, w.rate + accelStrength));
     else w.rate = Math.max(0, w.rate - damperStrength);
@@ -90,7 +75,6 @@ export class Home extends Component {
     let key = e.key === " " ? "space" : e.key.toLowerCase();
     this.keyboard[key] ? (this.keyboard[key].pressed = false) : void 0;
   };
-  componentDidUpdate = () => console.log("Updated");
   componentDidMount = () => {
     this.container.appendChild(this.renderer.domElement);
     document.addEventListener("keydown", this._keyDown);
@@ -109,7 +93,7 @@ export class Home extends Component {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       return (
         <div
-          style={{ width: "inherit", height: "inherit",  overflow:"hidden" }}
+          style={{ width: "inherit", height: "inherit", overflow: "hidden" }}
           ref={thisNode => (this.container = thisNode)}
         />
       );
