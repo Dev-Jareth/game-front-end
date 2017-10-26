@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import ParticleCloud from "./ParticleCloud.three.js";
-// import ship from "../../Fighter SF2 N300707";
-// console.log(ship);
+import Planet from "./Planet.three.js";
 const generateKeyboard = array => {
   let response = {};
   array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0 } }), this);
@@ -18,14 +17,17 @@ export class Home extends Component {
       color: 0xffa0a0
     });
     this.mesh = new THREE.Mesh(geometry, material);
-    this.mesh2 = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
-    this.mesh2.position.x = -300;
-    this.mesh2.position.y = -300;
-    this.mesh2.position.z = -300;
+    // this.mesh2 = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
+    // this.mesh2.position.x = -300;
+    // this.mesh2.position.y = -300;
+    // this.mesh2.position.z = -300;
     let light = new THREE.PointLight(0x404040);
     light.position.z = 1000;
-    this.player.add(this.mesh);
-    this.scene.add(this.mesh2);
+    let planetObj = new Planet(2000, 300);
+    let planet = planetObj.objects
+    planetObj.animate();
+    planet.position.z = -1000
+    this.scene.add(planet);
     this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -37,10 +39,17 @@ export class Home extends Component {
     this.scene.add(this.player);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     console.log(this.keyboard);
-    this.scene.add(new ParticleCloud(100000));
-    // this.loader.load("./Fighter SF2 N300707.json", obj => console.log(obj));
+    this.scene.add(new ParticleCloud(10000));
+    this.loader.load("./models/ship.json", this.handleLoadJson);
     // setTimeout(()=>this.material.color = 0x0000ff,3000)
   }
+  handleLoadJson = (geo, mat) => {
+    let loader = new THREE.MaterialLoader();
+    console.log("Mat",mat)
+    this.player.add(new THREE.Mesh(geo, mat));
+    console.log("Loaded")
+    
+  };
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
     let damperStrength = 5 / 100;
@@ -100,7 +109,7 @@ export class Home extends Component {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       return (
         <div
-          style={{ width: "inherit", height: "inherit", position: "absolute" }}
+          style={{ width: "inherit", height: "inherit",  overflow:"hidden" }}
           ref={thisNode => (this.container = thisNode)}
         />
       );
