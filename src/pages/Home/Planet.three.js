@@ -28,33 +28,43 @@ const calculateOrbiterVelocity = (planetRadius, orbitRadius) => {
   let mass = planetDensityCoefficient * Math.pow(planetRadius, 3);
   let velocity = Math.sqrt(G * mass / Math.pow(orbitRadius, 2));
   let timePeriod = 2 * Math.PI / velocity;
-  console.log("Hours of orbit:", timePeriod / 3600);
   return velocity;
 };
 const scale = 0.1;
-const orbitScale = 0.1
+const orbitScale = 0.1;
 
 export default (radius = 100, satelliteRadius, orbitDistance = radius + satelliteRadius) => {
   let accuracy = 100;
   let geometry = new THREE.SphereGeometry(radius * scale, accuracy, accuracy);
   let planet = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x118888 }));
+  let loader = new THREE.JSONLoader();
+  loader.load("./models/planet.json", (geo, mat) => {
+    planet.material = mat;
+  });
   let group = new THREE.Group();
   group.add(planet);
-  let animate = null;
+  let angularVelocity = 0.0001;
+  let animate = {
+    planet: t => {
+      requestAnimationFrame(animate.planet)
+      planet.rotation.y = (t * angularVelocity) % (2 * Math.PI);
+    }
+  };
+  animate.planet();
   if (satelliteRadius) {
     let geometry = new THREE.SphereGeometry(satelliteRadius * scale, accuracy, accuracy);
     let satellite = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0xf8f8f8 }));
     satellite.position.x = orbitDistance;
     group.add(satellite);
     let velocity = calculateOrbiterVelocity(radius, orbitDistance);
-    animate = t => {
-      t = (t * velocity ) % (2 * Math.PI);
-      requestAnimationFrame(animate);
+    animate.satellite = t => {
+      t = (t * velocity) % (2 * Math.PI);
+      requestAnimationFrame(animate.satellite);
       satellite.position.x = Math.sin(t) * orbitDistance * scale * orbitScale;
-      satellite.position.y = Math.cos(t) * orbitDistance * scale* orbitScale;
-      satellite.position.z = Math.cos(t) * orbitDistance * scale* orbitScale;
+      satellite.position.y = Math.cos(t) * orbitDistance * scale * orbitScale;
+      satellite.position.z = Math.cos(t) * orbitDistance * scale * orbitScale;
     };
-    animate();
+    animate.satellite();
   }
   return group;
 };
