@@ -13,7 +13,7 @@ export class Home extends Component {
     super();
     // this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
     this.scene = new THREE.Scene();
-    this.player = new Player('ship',this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000););
+    this.player = new Player('ship',this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000));
     let geometry = new THREE.BoxGeometry(200, 200, 200);
     let material = new THREE.MeshStandardMaterial({
       color: 0xffa0a0
