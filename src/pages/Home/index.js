@@ -16,8 +16,8 @@ export class Home extends Component {
       "ship",
       (this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000))
     );
-    let light = new THREE.PointLight(0x404040);
-    light.position.z = 1000;
+    let light = new THREE.PointLight(0x404040,20);
+    light.position.y = 1000;
     let earth = new Planet(6371, 1737, 384400);
     earth.position.z = 1500;
     this.scene.add(earth);
