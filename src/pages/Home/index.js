@@ -20,14 +20,15 @@ export class Home extends Component {
     let light = new THREE.PointLight(0x404040);
     light.position.z = 1000;
     let earth = new Planet(6371, 1737,384400);
-    earth.position.z = -1500;
+    earth.position.z = 1500;
     this.scene.add(earth);
     this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
-    this.camera.position.z = 600;
-    this.camera.position.y = 200;
+    this.camera.position.z = -6;
+    this.camera.rotation.y = Math.PI;
+    this.camera.position.y = 2;
     this.loader = new THREE.JSONLoader();
     this.player.add(this.camera);
     this.scene.add(this.player);
@@ -44,16 +45,16 @@ export class Home extends Component {
 
     if (w.pressed) w.rate = Math.min(maxSpeed, Math.max(1, w.rate + accelStrength));
     else w.rate = Math.max(0, w.rate - damperStrength);
-    this.player.translateZ(-w.rate);
+    this.player.translateZ(w.rate);
     if (s.pressed) s.rate = Math.min(maxSpeed, Math.max(1, s.rate + accelStrength));
     else s.rate = Math.max(0, s.rate - damperStrength);
-    this.player.translateZ(s.rate);
+    this.player.translateZ(-s.rate);
     if (a.pressed) a.rate = 1;
     else a.rate = Math.max(0, a.rate - damperStrength);
-    this.player.rotateZ(a.rate * 0.01);
+    this.player.rotateZ(a.rate * -0.01);
     if (d.pressed) d.rate = 1;
     else d.rate = Math.max(0, d.rate - damperStrength);
-    this.player.rotateZ(d.rate * -0.01);
+    this.player.rotateZ(d.rate * 0.01);
     if (q.pressed) q.rate = 1;
     else q.rate = Math.max(0, q.rate - damperStrength);
     this.player.rotateY(q.rate * 0.008);
@@ -62,10 +63,10 @@ export class Home extends Component {
     this.player.rotateY(e.rate * -0.008);
     if (space.pressed) space.rate = 1;
     else space.rate = Math.max(0, space.rate - damperStrength);
-    this.player.rotateX(space.rate * 0.01);
+    this.player.rotateX(space.rate * -0.01);
     if (shift.pressed) shift.rate = 1;
     else shift.rate = Math.max(0, shift.rate - damperStrength);
-    this.player.rotateX(shift.rate * -0.01);
+    this.player.rotateX(shift.rate * 0.01);
   };
   _keyDown = e => {
     let key = e.key === " " ? "space" : e.key.toLowerCase();
