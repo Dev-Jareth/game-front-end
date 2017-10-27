@@ -11,14 +11,8 @@ const generateKeyboard = array => {
 export class Home extends Component {
   constructor() {
     super();
-    // this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
     this.scene = new THREE.Scene();
     this.player = new Player('ship',this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000));
-    let geometry = new THREE.BoxGeometry(200, 200, 200);
-    let material = new THREE.MeshStandardMaterial({
-      color: 0xffa0a0
-    });
-    this.mesh = new THREE.Mesh(geometry, material);
     let light = new THREE.PointLight(0x404040);
     light.position.z = 1000;
     let earth = new Planet(6371, 1737,384400);
