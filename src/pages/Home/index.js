@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as THREE from "three";
 import ParticleCloud from "./ParticleCloud.three.js";
 import Planet from "./Planet.three.js";
+import Player from "./Player.three.js";
 const generateKeyboard = array => {
   let response = {};
   array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0 } }), this);
@@ -10,8 +11,9 @@ const generateKeyboard = array => {
 export class Home extends Component {
   constructor() {
     super();
+    // this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
     this.scene = new THREE.Scene();
-    this.player = new THREE.Object3D();
+    this.player = new Player('ship',this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000););
     let geometry = new THREE.BoxGeometry(200, 200, 200);
     let material = new THREE.MeshStandardMaterial({
       color: 0xffa0a0
@@ -25,18 +27,10 @@ export class Home extends Component {
     this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000);
-    this.camera.position.z = -6;
-    this.camera.rotation.y = Math.PI;
-    this.camera.position.y = 2;
-    this.loader = new THREE.JSONLoader();
-    this.player.add(this.camera);
     this.scene.add(this.player);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     this.scene.add(new ParticleCloud(10000));
-    this.loader.load("./models/ship.json", this.handleLoadJson);
   }
-  handleLoadJson = (geo, mat) => this.player.add(new THREE.Mesh(geo, mat));
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
     let damperStrength = 5 / 100;
