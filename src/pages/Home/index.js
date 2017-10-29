@@ -12,9 +12,11 @@ export class Home extends Component {
   constructor() {
     super();
     this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.player = new Player(
       "ship",
-      (this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000))
+      (this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, -1)),
+      this.renderer.domElement
     );
     let light = new THREE.PointLight(0x404040,20);
     light.position.y = 1000;
@@ -23,10 +25,9 @@ export class Home extends Component {
     this.scene.add(earth);
     this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.scene.add(this.player);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
-    this.scene.add(new ParticleCloud(10000));
+    this.scene.add(new ParticleCloud(1000000,0.00001));
   }
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };

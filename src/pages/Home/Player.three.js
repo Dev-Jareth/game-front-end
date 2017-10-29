@@ -1,24 +1,34 @@
 import * as THREE from "three";
-export default (ship = "ship", camera) => {
+export default (ship = "ship", camera, canvas) => {
   const player = new THREE.Object3D();
+  let cameraPan = new THREE.Group();
   let cameraWrapper = new THREE.Group();
+  cameraPan.add(cameraWrapper)
   cameraWrapper.add(camera);
-
-  player.add(cameraWrapper);
-  let loader = new THREE.JSONLoader();
-  loader.load(`./models/${ship}.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat)));
-  let maxCameraY = 0.25;
-  let maxCameraX = 1;
-  document.addEventListener("mousemove", e => {
-    let distanceX = 100 * e.x / window.innerWidth;
-    let distanceY = 100 * e.y / window.innerHeight;
-    // console.log( 2*Math.PI*(50-distanceX)/100)
-    cameraWrapper.rotation.y = maxCameraX * 2 * Math.PI * (50 - distanceX) / 100;
-    cameraWrapper.rotation.x = maxCameraY * 2 * Math.PI * (50 - distanceY) / 100;
-  });
-
   camera.position.z = -10;
   camera.rotation.y = Math.PI;
   camera.position.y = 2;
+  // player.add(cameraWrapper);
+  player.add(cameraPan);
+
+  let loader = new THREE.JSONLoader();
+  loader.load(`./models/${ship}.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
+
+  //CameraControls
+  this.enabled = false;
+  let maxCameraY = 0.25;
+  let maxCameraX = 0.5;
+  document.addEventListener("pointerlockchange", e => (this.enabled = document.pointerLockElement === canvas));
+
+  document.addEventListener("pointerlockerror", e => console.log("PointerLockError", e), false);
+  document.addEventListener("click", e => canvas.requestPointerLock());
+  document.addEventListener("mousemove", e => {
+    if (this.enabled) {
+      cameraPan.rotation.y= Math.min(maxCameraX,Math.max(-maxCameraX,cameraPan.rotation.y - e.movementX/1000))
+      // cameraWrapper.rotation.y-=e.movementX/500
+      cameraWrapper.rotation.x= Math.min(maxCameraY,Math.max(-maxCameraY,cameraWrapper.rotation.x - e.movementY/1000))
+    } 
+  });
+
   return player;
-}; 
+};
