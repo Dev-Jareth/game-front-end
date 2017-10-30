@@ -67,7 +67,7 @@ const Navigaton = props => {
   ));
   return (
     <span>
-      <SideNav match={props.match} links={props.links} /> {routes}
+      {/*<SideNav match={props.match} links={props.links} /> */}{routes}
     </span>
   );
 };
