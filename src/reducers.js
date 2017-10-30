@@ -8,7 +8,7 @@ const fulfilled = type => type + "_FULFILLED";
 const rejected = type => type + "_REJECTED";
 
 let userInitState = {
-  user: null,
+  user: "username",
   badCredentials: false,
   goodCredentials: false,
   pending: false
