@@ -8,26 +8,73 @@ const generateKeyboard = array => {
   array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0 } }), this);
   return response;
 };
+const settings = {
+  mapDimensions: 2000000,
+  lowX: () => -settings.mapDimensions / 2,
+  lowY: () => -settings.mapDimensions / 2,
+  lowZ: () => -settings.mapDimensions / 2,
+  highX: () => settings.mapDimensions / 2,
+  highY: () => settings.mapDimensions / 2,
+  highZ: () => settings.mapDimensions / 2
+};
+const camera = () => new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, -1);
+const renderer = () => new THREE.WebGLRenderer({ antialias: true });
+const planet = ({ planetRadius, satelliteRadius, orbitRadius, position } = {}) => {
+  let newPlanet = new Planet(planetRadius, satelliteRadius, orbitRadius);
+  if (position) {
+    let { x, y, z } = position;
+    newPlanet.position.set(x, y, z);
+  }
+  return newPlanet;
+};
+const assignLights = scene => {
+  let { lowX, lowY, lowZ, highX, highY, highZ } = settings;
+  lowX = lowX();
+  lowY = lowY();
+  lowZ = lowZ();
+  highX = highX();
+  highY = highY();
+  highZ = highZ();
+  let lights = {};
+  let lightProps = [0x404040, 0.1];
+  lights.xlylzl = new THREE.PointLight(...lightProps);
+  lights.xlyhzl = new THREE.PointLight(...lightProps);
+  lights.xlylzh = new THREE.PointLight(...lightProps);
+  lights.xlyhzh = new THREE.PointLight(...lightProps);
+  lights.xhylzl = new THREE.PointLight(...lightProps);
+  lights.xhyhzl = new THREE.PointLight(...lightProps);
+  lights.xhylzh = new THREE.PointLight(...lightProps);
+  lights.xhyhzh = new THREE.PointLight(...lightProps);
+  let { xlylzl, xlyhzl, xlylzh, xlyhzh, xhylzl, xhyhzl, xhylzh, xhyhzh } = lights;
+  xlylzl.position.set(lowX, lowY, lowZ);
+  xlyhzl.position.set(lowX, highY, lowZ);
+  xlylzh.position.set(lowX, lowY, highZ);
+  xlyhzh.position.set(lowX, highY, highZ);
+  xhylzl.position.set(highX, lowY, lowZ);
+  xhyhzl.position.set(highX, highY, lowZ);
+  xhylzh.position.set(highX, lowY, highZ);
+  xhyhzh.position.set(highX, highY, highZ);
+  for (var key in lights) scene.add(lights[key]);
+};
 export class Home extends Component {
   constructor() {
     super();
     this.scene = new THREE.Scene();
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.player = new Player(
-      "ship",
-      (this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, -1)),
-      this.renderer.domElement
-    );
-    let light = new THREE.PointLight(0x404040,1);
-    light.position.y = 1000;
-    let earth = new Planet(6371, 1737, 384400);
-    earth.position.z = 1500;
+    this.renderer = renderer();
+    this.camera = camera();
+    this.player = new Player("ship", this.camera, this.renderer.domElement);
+    let earth = new planet({
+      planetRadius: 6371,
+      satelliteRadius: 1737,
+      orbitRadius: 384400,
+      position: new THREE.Vector3(0, 0, 1500)
+    });
     this.scene.add(earth);
-    this.scene.add(light);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.scene.add(this.player);
+    assignLights(this.scene);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
-    this.scene.add(new ParticleCloud(1000000,0.00001));
+    this.scene.add(new ParticleCloud(settings.mapDimensions / 2, 2 / settings.mapDimensions));
   }
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
