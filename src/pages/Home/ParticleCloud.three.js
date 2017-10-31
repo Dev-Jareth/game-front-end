@@ -10,6 +10,6 @@ export default (diameter=2000,density=1) =>{
     vertex.z = THREE.Math.randFloatSpread( diameter );
     geometry.vertices.push( vertex );
   }
-  var particles = new THREE.Points( geometry, new THREE.PointsMaterial( { color: 0x888888 } ) );
+  let particles = new THREE.Points( geometry, new THREE.PointsMaterial( { color: 0x888888 } ) );
   return particles
 }
