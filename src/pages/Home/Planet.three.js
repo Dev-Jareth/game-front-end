@@ -39,19 +39,14 @@ export default (radius = 100, satelliteRadius, orbitDistance = radius + satellit
   let material = new THREE.MeshPhongMaterial();
   let planet = new THREE.Mesh(geometry, material);
   let loader = new THREE.JSONLoader();
-  material.map = new THREE.ImageUtils.loadTexture('./models/Planet/1_earth_16k.jpg')
-  material.bumpMap = new THREE.ImageUtils.loadTexture('./models/Planet/Bump.jpg')
-  // loader.load("./models/planet.json", (geo, mat) => {
-  //   planet.geometry = geo;
-  //   planet.material = mat;
-  //   console.log(mat)
-  // });
+  material.map = new THREE.ImageUtils.loadTexture("./models/Planet/1_earth_16k.jpg");
+  material.bumpMap = new THREE.ImageUtils.loadTexture("./models/Planet/Bump.jpg");
   let group = new THREE.Group();
   group.add(planet);
   let angularVelocity = 0.0001;
   let animate = {
     planet: t => {
-      requestAnimationFrame(animate.planet)
+      requestAnimationFrame(animate.planet);
       planet.rotation.y = (t * angularVelocity) % (2 * Math.PI);
     }
   };
