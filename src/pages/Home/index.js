@@ -143,6 +143,8 @@ export class Home extends Component {
       ? (w.rate = Math.min(maxSpeed, Math.max(1, w.rate + accelStrength)))
       : (w.rate = Math.max(0, w.rate - damperStrength));
     this.player.translateZ(w.rate);
+    w.rate!==0?this.player.engines.scale.set(1,1,w.rate/3):void 0;
+    w.rate!==0?this.player.engines.children[0].material[0].opacity =0.1*w.rate:void 0;
     //S
     s.pressed
       ? (s.rate = Math.min(maxSpeed, Math.max(1, s.rate + accelStrength)))

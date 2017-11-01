@@ -10,11 +10,16 @@ export default (ship = "ship", camera, canvas) => {
   camera.position.y = 2;
   // player.add(cameraWrapper);
   player.add(cameraPan);
+  let engines = new THREE.Group()
+  player.engines = engines;
+  engines.position.set(0,0,-4.79452)
+  console.log(engines)
+  player.add(engines)
 
   let loader = new THREE.JSONLoader();
   loader.load(`./models/${ship}.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
-  loader.load(`./models/${ship}_engine1.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
-  loader.load(`./models/${ship}_engine2.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
+  // loader.load(`./models/${ship}_engine1.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
+  loader.load(`./models/${ship}_engine2.json`, (geo, mat) => engines.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
   //CameraControls
   this.enabled = false;
   let maxCameraY = 0.25;
