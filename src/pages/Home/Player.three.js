@@ -15,6 +15,7 @@ export default (ship = "ship", camera, canvas) => {
   engines.position.set(0,0,-5.00452)
   engines.scale.set(0.001,0.001,0.001)
   player.add(engines)
+  player.add(new THREE.PointLight(0x404040,1,0,1))
 
   let loader = new THREE.JSONLoader();
   loader.load(`./models/${ship}.json`, (geo, mat) => player.add(new THREE.Mesh(geo, mat||new THREE.MeshStandardMaterial({color:0xffffff}))));
