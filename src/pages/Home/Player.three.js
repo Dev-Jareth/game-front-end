@@ -12,8 +12,8 @@ export default (ship = "ship", camera, canvas) => {
   player.add(cameraPan);
   let engines = new THREE.Group()
   player.engines = engines;
-  engines.position.set(0,0,-4.79452)
-  console.log(engines)
+  engines.position.set(0,0,-5.00452)
+  engines.scale.set(0.001,0.001,0.001)
   player.add(engines)
 
   let loader = new THREE.JSONLoader();
