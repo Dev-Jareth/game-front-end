@@ -111,16 +111,14 @@ export class Home extends Component {
   // }
   crash = () => {
     alert("You Crashed!");
-    this.player.position.set(0,0,0)
+    this.player.position.set(0, 0, 0);
   };
   didBoundingBoxCollide = target => {
     let boxCollided;
     let bbts = [];
     getMeshs(target).forEach(mesh => bbts.push(new THREE.Box3().setFromObject(mesh)));
     let ship = getMeshs(this.player)[0];
-    // console.log(ship)
-    let bbp = new THREE.Box3().setFromObject(ship||this.player);
-    // console.log(bbp)
+    let bbp = new THREE.Box3().setFromObject(ship || this.player); //ship is not loaded initially so this.player used
     bbts.forEach(bbt => {
       if (
         bbp.min.x <= bbt.max.x &&
@@ -187,8 +185,8 @@ export class Home extends Component {
   animate = () => {
     this.calculatePlayerMove();
     this.renderer.render(this.scene, this.camera);
-    this.didCrashOccur() ? this.crash() :void(0);
-     requestAnimationFrame(this.animate);
+    this.didCrashOccur() ? this.crash() : void 0;
+    requestAnimationFrame(this.animate);
   };
 
   render() {
@@ -196,7 +194,6 @@ export class Home extends Component {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       return (
         <div
-          style={{ width: "inherit", height: "inherit", overflow: "hidden" }}
           ref={thisNode => (this.container = thisNode)}
         />
       );

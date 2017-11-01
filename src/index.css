@@ -5,6 +5,7 @@ body {
   font-family: sans-serif;
   color: var(--text);
   background: var(--background);
+  overflow: hidden;
 }
 :disabled{
   cursor:not-allowed;
