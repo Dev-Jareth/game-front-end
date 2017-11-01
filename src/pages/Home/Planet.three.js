@@ -37,10 +37,16 @@ export default (radius = 100, satelliteRadius, orbitDistance = radius + satellit
   let accuracy = 100;
   let geometry = new THREE.SphereGeometry(radius * scale, accuracy, accuracy);
   let material = new THREE.MeshPhongMaterial();
+  let loader = new THREE.TextureLoader();
+  loader.load("./models/Planet/1_earth_16k.jpg", diffuse => {
+    material.map = diffuse;
+    material.needsUpdate = true;
+  });
+  loader.load("./models/Planet/Bump.jpg", bump => {
+    material.bumpMap = bump;
+    material.needsUpdate = true;
+  });
   let planet = new THREE.Mesh(geometry, material);
-  let loader = new THREE.JSONLoader();
-  material.map = new THREE.ImageUtils.loadTexture("./models/Planet/1_earth_16k.jpg");
-  material.bumpMap = new THREE.ImageUtils.loadTexture("./models/Planet/Bump.jpg");
   let group = new THREE.Group();
   group.add(planet);
   let angularVelocity = 0.0001;
