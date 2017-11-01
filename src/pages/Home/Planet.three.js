@@ -30,8 +30,8 @@ const calculateOrbiterVelocity = (planetRadius, orbitRadius) => {
   let timePeriod = 2 * Math.PI / velocity;
   return velocity;
 };
-const scale = 1;
-const orbitScale = 1;
+const scale = 0.1;
+const orbitScale = 0.1;
 
 export default (radius = 100, satelliteRadius, orbitDistance = radius + satelliteRadius) => {
   let accuracy = 100;
