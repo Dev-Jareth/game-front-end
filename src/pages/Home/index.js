@@ -134,40 +134,41 @@ export class Home extends Component {
   };
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
-    let damperStrength = 5 / 100;
-    let accelStrength = 5 / 100;
+    let damperStrength = 2 / 100;
+    let engineStrength = 5 / 100;
     let maxSpeed = 5;
-    let maxManouver = maxSpeed/2;
+    let maxReverse = 2;
+    let maxManouver = 2;
 
     //W
     w.pressed
-      ? (w.rate = Math.min(maxSpeed, w.rate + accelStrength))
-      : (w.rate = Math.max(0, w.rate - damperStrength));
+      ? (w.rate = Math.min(maxSpeed, w.rate + engineStrength))
+      : (w.rate = Math.max(0, w.rate - engineStrength));
     this.player.translateZ(w.rate);
     w.rate!==0?this.player.engines.scale.set(1,1,w.rate/3):void 0;
-    w.rate!==0?this.player.engines.children[0].material[0].opacity =0.1*w.rate:void 0;
+    w.rate!==0?this.player.engines.children[0].material[0].opacity =0.1*(w.rate/3):void 0;
     //S
     s.pressed
-      ? (s.rate = Math.min(1, s.rate + accelStrength))
+      ? (s.rate = Math.min(maxReverse, s.rate + damperStrength))
       : (s.rate = Math.max(0, s.rate - damperStrength));
     this.player.translateZ(-s.rate);
     //A
-    a.pressed ? (a.rate = Math.min(maxManouver, a.rate + accelStrength)) : (a.rate = Math.max(0, a.rate - damperStrength));
+    a.pressed ? (a.rate = Math.min(maxManouver, a.rate + damperStrength)) : (a.rate = Math.max(0, a.rate - damperStrength));
     this.player.rotateZ(a.rate * -0.01);
     //D
-    d.pressed ? (d.rate = Math.min(maxManouver, d.rate + accelStrength)) : (d.rate = Math.max(0, d.rate - damperStrength));
+    d.pressed ? (d.rate = Math.min(maxManouver, d.rate + damperStrength)) : (d.rate = Math.max(0, d.rate - damperStrength));
     this.player.rotateZ(d.rate * 0.01);
     //Q
-    q.pressed ? (q.rate = Math.min(maxManouver, q.rate + accelStrength)) : (q.rate = Math.max(0, q.rate - damperStrength));
+    q.pressed ? (q.rate = Math.min(maxManouver, q.rate + damperStrength)) : (q.rate = Math.max(0, q.rate - damperStrength));
     this.player.rotateY(q.rate * 0.008);
     //E
-    e.pressed ? (e.rate = Math.min(maxManouver, e.rate + accelStrength)) : (e.rate = Math.max(0, e.rate - damperStrength));
+    e.pressed ? (e.rate = Math.min(maxManouver, e.rate + damperStrength)) : (e.rate = Math.max(0, e.rate - damperStrength));
     this.player.rotateY(e.rate * -0.008);
     //SPACE
-    space.pressed ? (space.rate = Math.min(maxManouver, space.rate + accelStrength)) : (space.rate = Math.max(0, space.rate - damperStrength));
+    space.pressed ? (space.rate = Math.min(maxManouver, space.rate + damperStrength)) : (space.rate = Math.max(0, space.rate - damperStrength));
     this.player.rotateX(space.rate * -0.01);
     //SHIFT
-    shift.pressed ? (shift.rate = Math.min(maxManouver, shift.rate + accelStrength)) : (shift.rate = Math.max(0, shift.rate - damperStrength));
+    shift.pressed ? (shift.rate = Math.min(maxManouver, shift.rate + damperStrength)) : (shift.rate = Math.max(0, shift.rate - damperStrength));
     this.player.rotateX(shift.rate * 0.01);
   };
   _keyDown = e => {
