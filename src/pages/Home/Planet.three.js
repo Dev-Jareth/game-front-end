@@ -30,17 +30,22 @@ const calculateOrbiterVelocity = (planetRadius, orbitRadius) => {
   let timePeriod = 2 * Math.PI / velocity;
   return velocity;
 };
-const scale = 0.1;
-const orbitScale = 0.1;
+const scale = 1;
+const orbitScale = 1;
 
 export default (radius = 100, satelliteRadius, orbitDistance = radius + satelliteRadius) => {
   let accuracy = 100;
   let geometry = new THREE.SphereGeometry(radius * scale, accuracy, accuracy);
-  let planet = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x118888 }));
+  let material = new THREE.MeshPhongMaterial();
+  let planet = new THREE.Mesh(geometry, material);
   let loader = new THREE.JSONLoader();
-  loader.load("./models/planet.json", (geo, mat) => {
-    planet.material = mat;
-  });
+  material.map = new THREE.ImageUtils.loadTexture('./models/Planet/1_earth_16k.jpg')
+  material.bumpMap = new THREE.ImageUtils.loadTexture('./models/Planet/Bump.jpg')
+  // loader.load("./models/planet.json", (geo, mat) => {
+  //   planet.geometry = geo;
+  //   planet.material = mat;
+  //   console.log(mat)
+  // });
   let group = new THREE.Group();
   group.add(planet);
   let angularVelocity = 0.0001;
