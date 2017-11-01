@@ -17,6 +17,7 @@ const settings = {
   highY: () => settings.mapDimensions / 2,
   highZ: () => settings.mapDimensions / 2
 };
+const collidableObjects = [];
 const camera = () => new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, -1);
 const renderer = () => new THREE.WebGLRenderer({ antialias: true });
 const planet = ({ planetRadius, satelliteRadius, orbitRadius, position } = {}) => {
@@ -56,6 +57,14 @@ const assignLights = scene => {
   xhyhzh.position.set(highX, highY, highZ);
   for (var key in lights) scene.add(lights[key]);
 };
+const getMeshs = obj => {
+  let meshs = [];
+  let traverse = ch => {
+    ch.type === "Mesh" ? meshs.push(ch) : ch.children.forEach(traverse);
+  };
+  traverse(obj);
+  return meshs;
+};
 export class Home extends Component {
   constructor() {
     super();
@@ -69,13 +78,62 @@ export class Home extends Component {
       orbitRadius: 384400,
       position: new THREE.Vector3(0, 0, 1500)
     });
-    this.scene.add(earth);
+    collidableObjects.push(earth);
     this.scene.add(new THREE.AmbientLight(0x404040, 0.3));
     this.scene.add(this.player);
     assignLights(this.scene);
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     this.scene.add(new ParticleCloud(settings.mapDimensions / 2, 2 / settings.mapDimensions));
+    this.scene.add(...collidableObjects);
   }
+  didCrashOccur = () => {
+    let wasCollision = false;
+    collidableObjects.forEach(obj => {
+      this.didBoundingBoxCollide(obj) ? (wasCollision = true) : null;
+    });
+    return wasCollision;
+  };
+  // didActualCollide = target => {
+  //   let findMesh = obj => obj.geometry?obj:obj.children.forEach(findMesh);
+  //   this.player.ship.children[0].geometry.vertices.forEach(vert=>{
+  //     let localVert = vert.clone();
+  //     let globalVert = this.player.matrix.multiplyVector3(localVert);
+  //     let directionVector = globalVert.sub(this.player.position);
+  //     let ray = new THREE.Ray(Player.position,directionVector.clone().normalize())
+  //     if(target.geometry){//is mesh
+  //       mesh.geometry.vertices.forEach(tvert=>ray.distanceToPoint(tvert) < directionVector.length()?console.log('collision'):void(0))
+  //     } else {//is container
+  //     target.children.forEach(mesh=>{
+  //       mesh.geometry.vertices.forEach(tvert=>ray.distanceToPoint(tvert) < directionVector.length()?console.log('collision'):void(0))
+  //     })}
+  //     // if(collisionResult.length > 0 && collisionResult[0].distance < directionVector.length()) console.log("Collision")
+  //   })
+  // }
+  crash = () => {
+    alert("You Crashed!");
+    this.player.position.set(0,0,0)
+  };
+  didBoundingBoxCollide = target => {
+    let boxCollided;
+    let bbts = [];
+    getMeshs(target).forEach(mesh => bbts.push(new THREE.Box3().setFromObject(mesh)));
+    let ship = getMeshs(this.player)[0];
+    // console.log(ship)
+    let bbp = new THREE.Box3().setFromObject(ship||this.player);
+    // console.log(bbp)
+    bbts.forEach(bbt => {
+      if (
+        bbp.min.x <= bbt.max.x &&
+        bbp.max.x >= bbt.min.x &&
+        bbp.min.y <= bbt.max.y &&
+        bbp.max.y >= bbt.min.y &&
+        bbp.min.z <= bbt.max.z &&
+        bbp.max.z >= bbt.min.z
+      )
+        boxCollided = true;
+    });
+    return boxCollided;
+  };
   calculatePlayerMove = () => {
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
     let damperStrength = 5 / 100;
@@ -127,9 +185,10 @@ export class Home extends Component {
     this.animate();
   };
   animate = () => {
-    requestAnimationFrame(this.animate);
     this.calculatePlayerMove();
     this.renderer.render(this.scene, this.camera);
+    this.didCrashOccur() ? this.crash() :void(0);
+     requestAnimationFrame(this.animate);
   };
 
   render() {
