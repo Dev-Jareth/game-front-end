@@ -27,7 +27,6 @@ const calculateOrbiterVelocity = (planetRadius, orbitRadius) => {
   let G = 6.67 * Math.pow(10, -11);
   let mass = planetDensityCoefficient * Math.pow(planetRadius, 3);
   let velocity = Math.sqrt(G * mass / Math.pow(orbitRadius, 2));
-  let timePeriod = 2 * Math.PI / velocity;
   return velocity;
 };
 const scale = 0.1;
