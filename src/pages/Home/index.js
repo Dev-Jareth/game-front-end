@@ -8,7 +8,7 @@ import Player from "./Player.three.js";
 const socket = io(socketServer.baseUrl);
 const generateKeyboard = array => {
   let response = {};
-  array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0,serverState:false } }), this);
+  array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0, serverState: false } }), this);
   return response;
 };
 const settings = {
@@ -88,14 +88,14 @@ export class Home extends Component {
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     this.scene.add(new ParticleCloud(settings.mapDimensions / 2, 2 / settings.mapDimensions));
     this.scene.add(...collidableObjects);
-    socket.on("serverPlayerMove",data=>{
-      this.keyboard[data.key].serverState=data.isPressed;
-    })
+    socket.on("serverPlayerMove", data => {
+      this.keyboard[data.key].serverState = data.isPressed;
+    });
   }
   didCrashOccur = () => {
     let wasCollision = false;
     collidableObjects.forEach(obj => {
-      this.didBoundingBoxCollide(obj) ? (wasCollision = true) : null;
+      this.didBoundingBoxCollide(obj) ? (wasCollision = true) : void 0;
     });
     return wasCollision;
   };
@@ -141,8 +141,10 @@ export class Home extends Component {
   requestPlayerMove = () => {
     let keyboard = this.keyboard;
     Object.keys(keyboard).forEach(
-      (key) =>
-        keyboard[key].pressed !== keyboard[key].serverState ? socket.emit("clientPlayerMove", { key, isPressed: keyboard[key].pressed }) : void 0
+      key =>
+        keyboard[key].pressed !== keyboard[key].serverState
+          ? socket.emit("clientPlayerMove", { key, isPressed: keyboard[key].pressed })
+          : void 0
     );
   };
   calculatePlayerMove = () => {
@@ -209,6 +211,11 @@ export class Home extends Component {
     this.container.appendChild(this.renderer.domElement);
     document.addEventListener("keydown", this._keyDown);
     document.addEventListener("keyup", this._keyUp);
+    window.addEventListener("resize",()=>{
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    },false)
 
     this.animate();
   };
