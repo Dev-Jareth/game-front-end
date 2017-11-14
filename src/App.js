@@ -4,7 +4,6 @@ import { ConnectedRouter as Router } from "react-router-redux";
 import { connect } from "react-redux";
 import "./App.css";
 import { Login, Home } from "./pages";
-import { SideNav } from "./components";
 import * as Action from "./actions";
 
 const mapStateToProps = store => {
@@ -18,14 +17,10 @@ export class App extends Component {
         {
           to: "/",
           exact: true,
-          icon: "home",
-          content: "Home",
           component: Home
         },
         {
           to: "/settings",
-          icon: "gear",
-          content: "Settings",
           component: null
         }
       ]
@@ -61,16 +56,8 @@ export class App extends Component {
   };
 }
 
-const Navigaton = props => {
-  let routes = props.links.map(route => (
-    <Route key={route.to} path={route.to} exact={route.exact} component={route.component} />
-  ));
-  return (
-    <span>
-      {/*<SideNav match={props.match} links={props.links} /> */}{routes}
-    </span>
-  );
-};
+const Navigaton = props =>
+  props.links.map(route => <Route key={route.to} path={route.to} exact={route.exact} component={route.component} />);
 
 export default connect(mapStateToProps)(App);
 const PrivateRoute = ({ component: Component, allowed, ...rest }) => (
