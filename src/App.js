@@ -56,8 +56,12 @@ export class App extends Component {
   };
 }
 
-const Navigaton = props =>
-  props.links.map(route => <Route key={route.to} path={route.to} exact={route.exact} component={route.component} />);
+const Navigaton = props => {
+  let routes = props.links.map(route => (
+    <Route key={route.to} path={route.to} exact={route.exact} component={route.component} />
+  ));
+  return (<Switch>{routes}</Switch>);
+};
 
 export default connect(mapStateToProps)(App);
 const PrivateRoute = ({ component: Component, allowed, ...rest }) => (
