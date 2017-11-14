@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import {socketServer} from "../../config";
+import io from "socket.io-client";
 import * as THREE from "three";
 import ParticleCloud from "./ParticleCloud.three.js";
 import Planet from "./Planet.three.js";
 import Player from "./Player.three.js";
+const socket = io(socketServer.baseUrl);
 const generateKeyboard = array => {
   let response = {};
   array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0 } }), this);

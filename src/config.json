@@ -1,0 +1,5 @@
+{
+    "socketServer":{
+        "baseUrl":"localhost:3002"
+    }
+}
