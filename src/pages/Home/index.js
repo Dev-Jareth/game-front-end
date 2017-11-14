@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {socketServer} from "../../config";
+import { socketServer } from "../../config";
 import io from "socket.io-client";
 import * as THREE from "three";
 import ParticleCloud from "./ParticleCloud.three.js";
@@ -8,7 +8,7 @@ import Player from "./Player.three.js";
 const socket = io(socketServer.baseUrl);
 const generateKeyboard = array => {
   let response = {};
-  array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0 } }), this);
+  array.forEach(el => (response = { ...response, [el]: { pressed: false, rate: 0,serverState:false } }), this);
   return response;
 };
 const settings = {
@@ -88,6 +88,9 @@ export class Home extends Component {
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     this.scene.add(new ParticleCloud(settings.mapDimensions / 2, 2 / settings.mapDimensions));
     this.scene.add(...collidableObjects);
+    socket.on("serverPlayerMove",data=>{
+      this.keyboard[data.key].serverState=data.isPressed;
+    })
   }
   didCrashOccur = () => {
     let wasCollision = false;
@@ -135,7 +138,15 @@ export class Home extends Component {
     });
     return boxCollided;
   };
+  requestPlayerMove = () => {
+    let keyboard = this.keyboard;
+    Object.keys(keyboard).forEach(
+      (key) =>
+        keyboard[key].pressed !== keyboard[key].serverState ? socket.emit("clientPlayerMove", { key, isPressed: keyboard[key].pressed }) : void 0
+    );
+  };
   calculatePlayerMove = () => {
+    this.requestPlayerMove();
     let { w, a, s, d, q, e, space, shift } = { ...this.keyboard };
     let damperStrength = 2 / 100;
     let engineStrength = 5 / 100;
@@ -144,34 +155,46 @@ export class Home extends Component {
     let maxManouver = 2;
 
     //W
-    w.pressed
+    w.serverState
       ? (w.rate = Math.min(maxSpeed, w.rate + engineStrength))
       : (w.rate = Math.max(0, w.rate - engineStrength));
     this.player.translateZ(w.rate);
-    w.rate!==0?this.player.engines.scale.set(1,1,w.rate/3):void 0;
-    w.rate!==0?this.player.engines.children[0].material[0].opacity =0.1*(w.rate/3):void 0;
+    w.rate !== 0 ? this.player.engines.scale.set(1, 1, w.rate / 3) : void 0;
+    w.rate !== 0 ? (this.player.engines.children[0].material[0].opacity = 0.1 * (w.rate / 3)) : void 0;
     //S
-    s.pressed
+    s.serverState
       ? (s.rate = Math.min(maxReverse, s.rate + damperStrength))
       : (s.rate = Math.max(0, s.rate - damperStrength));
     this.player.translateZ(-s.rate);
     //A
-    a.pressed ? (a.rate = Math.min(maxManouver, a.rate + damperStrength)) : (a.rate = Math.max(0, a.rate - damperStrength));
+    a.serverState
+      ? (a.rate = Math.min(maxManouver, a.rate + damperStrength))
+      : (a.rate = Math.max(0, a.rate - damperStrength));
     this.player.rotateZ(a.rate * -0.01);
     //D
-    d.pressed ? (d.rate = Math.min(maxManouver, d.rate + damperStrength)) : (d.rate = Math.max(0, d.rate - damperStrength));
+    d.serverState
+      ? (d.rate = Math.min(maxManouver, d.rate + damperStrength))
+      : (d.rate = Math.max(0, d.rate - damperStrength));
     this.player.rotateZ(d.rate * 0.01);
     //Q
-    q.pressed ? (q.rate = Math.min(maxManouver, q.rate + damperStrength)) : (q.rate = Math.max(0, q.rate - damperStrength));
+    q.serverState
+      ? (q.rate = Math.min(maxManouver, q.rate + damperStrength))
+      : (q.rate = Math.max(0, q.rate - damperStrength));
     this.player.rotateY(q.rate * 0.008);
     //E
-    e.pressed ? (e.rate = Math.min(maxManouver, e.rate + damperStrength)) : (e.rate = Math.max(0, e.rate - damperStrength));
+    e.serverState
+      ? (e.rate = Math.min(maxManouver, e.rate + damperStrength))
+      : (e.rate = Math.max(0, e.rate - damperStrength));
     this.player.rotateY(e.rate * -0.008);
     //SPACE
-    space.pressed ? (space.rate = Math.min(maxManouver, space.rate + damperStrength)) : (space.rate = Math.max(0, space.rate - damperStrength));
+    space.serverState
+      ? (space.rate = Math.min(maxManouver, space.rate + damperStrength))
+      : (space.rate = Math.max(0, space.rate - damperStrength));
     this.player.rotateX(space.rate * -0.01);
     //SHIFT
-    shift.pressed ? (shift.rate = Math.min(maxManouver, shift.rate + damperStrength)) : (shift.rate = Math.max(0, shift.rate - damperStrength));
+    shift.serverState
+      ? (shift.rate = Math.min(maxManouver, shift.rate + damperStrength))
+      : (shift.rate = Math.max(0, shift.rate - damperStrength));
     this.player.rotateX(shift.rate * 0.01);
   };
   _keyDown = e => {
@@ -199,11 +222,7 @@ export class Home extends Component {
   render() {
     if (typeof window !== "undefined") {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
-      return (
-        <div
-          ref={thisNode => (this.container = thisNode)}
-        />
-      );
+      return <div ref={thisNode => (this.container = thisNode)} />;
     } else {
       return null;
     }
