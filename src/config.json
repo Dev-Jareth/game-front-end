@@ -1,5 +1,11 @@
 {
     "socketServer":{
-        "baseUrl":"localhost:3002"
+        "baseUrl":"localhost:3002",
+        "actions":{
+            "playerMove":{
+                "request":"clientPlayerMove",
+                "response":"serverPlayerMove"
+            }
+        }
     }
 }

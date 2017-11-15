@@ -88,7 +88,7 @@ export class Home extends Component {
     this.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
     this.scene.add(new ParticleCloud(settings.mapDimensions / 2, 2 / settings.mapDimensions));
     this.scene.add(...collidableObjects);
-    socket.on("serverPlayerMove", data => {
+    socket.on(socketServer.actions.playerMove.response, data => {
       this.keyboard[data.key].serverState = data.isPressed;
     });
   }
@@ -143,7 +143,7 @@ export class Home extends Component {
     Object.keys(keyboard).forEach(
       key =>
         keyboard[key].pressed !== keyboard[key].serverState
-          ? socket.emit("clientPlayerMove", { key, isPressed: keyboard[key].pressed })
+          ? socket.emit(socketServer.actions.playerMove.request, { key, isPressed: keyboard[key].pressed })
           : void 0
     );
   };
