@@ -46087,11 +46087,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+var kmToM = function kmToM(km) {
+    return km * 1000;
+};
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, kmToM(100000));
 var map = {
-    x: { min: -1000, max: 1000 },
-    y: { min: -1000, max: 1000 },
-    z: { min: -1000, max: 1000 },
+    x: { min: kmToM(-100000), max: kmToM(100000) },
+    y: { min: kmToM(-100000), max: kmToM(100000) },
+    z: { min: kmToM(-100000), max: kmToM(100000) },
     player: {
         coords: {
             x: 0, y: 0, z: 5, set: function set(vector) {
@@ -46186,12 +46189,17 @@ var player = new THREE.Group();
 var game = function game() {
     var gameContainer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.getElementById('game-container');
 
+    var ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+    var pointLight = new THREE.PointLight();
+    scene.add(ambientLight);
+    scene.add(pointLight);
+    scene.add((0, _models.StarCloud)({ density: 0.001, coords: { x: map.x, y: map.y, z: map.z } }));
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     gameContainer.appendChild(renderer.domElement);
-    var geometry = new THREE.BoxGeometry(10, 10, 10);
-    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+    var geometry = new THREE.BoxGeometry(4, 2, 10);
+    var material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
     // var cube = new THREE.Mesh(geometry, material);
-    var cube = (0, _models.Planet)({ radius: 1000 });
+    var earth = (0, _models.Planet)({ radius: kmToM(6371) });
     player.add(new THREE.Mesh(geometry, material));
     player.add(camera);
     scene.add(player);
@@ -46199,8 +46207,9 @@ var game = function game() {
     camera.position.z = -15;
     camera.position.y = 5;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
-    map.objects.push(cube);
-    scene.add(cube);
+    map.objects.push(earth);
+    earth.position.z = kmToM(6371);
+    scene.add(earth);
     animate();
     addEventListeners();
 };
@@ -46244,6 +46253,15 @@ Object.defineProperty(exports, 'Planet', {
   }
 });
 
+var _starCloud = __webpack_require__(5);
+
+Object.defineProperty(exports, 'StarCloud', {
+  enumerable: true,
+  get: function get() {
+    return _starCloud.StarCloud;
+  }
+});
+
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -46267,7 +46285,60 @@ var defaultArgs = { radius: 10 };
 var Planet = exports.Planet = function Planet() {
     var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultArgs;
 
-    return new THREE.Mesh(new THREE.SphereGeometry(args.radius), new THREE.MeshBasicMaterial({ color: 0x00fff0, wireframe: true }));
+    return new THREE.Mesh(new THREE.SphereGeometry(args.radius, Math.max(8, args.radius / 100000), Math.max(8, args.radius / 100000)), new THREE.MeshBasicMaterial({ color: 0x00fff0, wireframe: true }));
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.StarCloud = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _three = __webpack_require__(0);
+
+var THREE = _interopRequireWildcard(_three);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var defaultArgs = { density: 1, coords: { x: { min: -1000, max: 1000 }, y: { min: -1000, max: 1000 }, z: { min: -1000, max: 1000 } } };
+var StarCloud = exports.StarCloud = function StarCloud() {
+    var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultArgs;
+
+    var density = args.density || 1;
+
+    var _args$coords = _extends({}, args.coords),
+        x = _args$coords.x,
+        y = _args$coords.y,
+        z = _args$coords.z;
+    // density *= Math.pow(10, -8);
+
+
+    density /= Math.pow(1000, 3);
+    density *= Math.pow(calcStarCount(args.coords), -1);
+    var points = Math.pow(calcStarCount(args.coords), 3) * density;
+    console.log(points);
+    var geometry = new THREE.Geometry();
+    for (var i = 0; i < points; i++) {
+        var vertex = new THREE.Vector3();
+        vertex.x = THREE.Math.randFloat(x.min, x.max);
+        vertex.y = THREE.Math.randFloat(y.min, y.max);
+        vertex.z = THREE.Math.randFloat(z.min, z.max);
+        geometry.vertices.push(vertex);
+    }
+    var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
+    return particles;
+};
+
+var calcStarCount = function calcStarCount(coords) {
+    return typeof coords === "number" ? (coords.x + coords.y.coords.z) / 3 : (coords.x.max - coords.x.min + coords.y.max - coords.y.min + coords.z.max - coords.z.min) / 3;
 };
 
 /***/ })

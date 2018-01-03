@@ -1,12 +1,13 @@
 import * as THREE from "three";
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-import { Planet } from './models';
+import { Planet, StarCloud } from './models';
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+const kmToM = km=>km*1000;
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, kmToM(100000));
 const map = {
-    x: { min: -1000, max: 1000 },
-    y: { min: -1000, max: 1000 },
-    z: { min: -1000, max: 1000 },
+    x: { min: kmToM(-100000), max: kmToM(100000) },
+    y: { min: kmToM(-100000), max: kmToM(100000) },
+    z: { min: kmToM(-100000), max: kmToM(100000) },
     player: {
         coords: {
             x: 0, y: 0, z: 5, set: vector => {
@@ -104,12 +105,17 @@ const _keyUp = e => {
 };
 var player = new THREE.Group();
 const game = (gameContainer = document.getElementById('game-container')) => {
+    let ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+    let pointLight = new THREE.PointLight();
+    scene.add(ambientLight);
+    scene.add(pointLight);
+    scene.add(StarCloud({density:0.001,coords:{x:map.x,y:map.y,z:map.z}}))
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     gameContainer.appendChild(renderer.domElement);
-    var geometry = new THREE.BoxGeometry(10, 10, 10);
-    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+    var geometry = new THREE.BoxGeometry(4, 2, 10);
+    var material = new THREE.MeshPhongMaterial({ color: 0x00ff00});
     // var cube = new THREE.Mesh(geometry, material);
-    var cube = Planet({ radius: 1000 })
+    var earth = Planet({ radius: kmToM(6371) })
     player.add(new THREE.Mesh(geometry, material));
     player.add(camera);
     scene.add(player);
@@ -117,8 +123,9 @@ const game = (gameContainer = document.getElementById('game-container')) => {
     camera.position.z = -15;
     camera.position.y = 5;
     camera.lookAt(new THREE.Vector3(0, 0, 0))
-    map.objects.push(cube);
-    scene.add(cube);
+    map.objects.push(earth);
+    earth.position.z = kmToM(6371);
+    scene.add(earth);
     animate();
     addEventListeners();
 }
