@@ -1,9 +1,0 @@
-{
-  "rules": {
-    "no-unneeded-ternary": 2,
-    "multiline-ternary": ["error", "never"],
-    "jsx-quotes": ["error", "prefer-double"],
-    "nonblock-statement-body-position": ["error", "beside"],
-    "max-len": 0
-  }
-}
