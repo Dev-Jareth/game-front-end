@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "build": "webpack",
-    "dev": "webpack --watch"
+    "dev": "start webpack --watch & node app.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

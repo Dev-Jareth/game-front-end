@@ -46069,7 +46069,7 @@ console.log("Hello World - Yarn Dev now working");
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -46080,158 +46080,92 @@ var THREE = _interopRequireWildcard(_three);
 
 var _models = __webpack_require__(3);
 
+var _player = __webpack_require__(6);
+
+var _player2 = _interopRequireDefault(_player);
+
+var _util = __webpack_require__(10);
+
+var _map = __webpack_require__(12);
+
+var _fakeData = __webpack_require__(16);
+
+var _fakeData2 = _interopRequireDefault(_fakeData);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/*######Debug######*/
+window.map = _map.map;
+/*#################*/
 
-var renderer = new THREE.WebGLRenderer({ antialias: true });
+var _keyboardListeners = _extends({}, _player.keyboardListeners),
+    _keyUp = _keyboardListeners._keyUp,
+    _keyDown = _keyboardListeners._keyDown;
 
+var SCREEN_WIDTH = 0;
+var SCREEN_HEIGHT = 0;
+var updateScreenResolution = function updateScreenResolution() {
+  SCREEN_WIDTH = window.innerWidth;
+  SCREEN_HEIGHT = window.innerHeight;
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+  camera.updateProjectionMatrix();
+};
+var renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
 var scene = new THREE.Scene();
-var kmToM = function kmToM(km) {
-    return km * 1000;
-};
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, kmToM(100000));
-var map = {
-    x: { min: kmToM(-100000), max: kmToM(100000) },
-    y: { min: kmToM(-100000), max: kmToM(100000) },
-    z: { min: kmToM(-100000), max: kmToM(100000) },
-    player: {
-        coords: {
-            x: 0, y: 0, z: 5, set: function set(vector) {
-                map.player.coords.x = vector.x;
-                map.player.coords.y = vector.y;
-                map.player.coords.z = vector.z;
-            }
-        },
-        rotation: {
-            x: 0, y: 0, z: 0, set: function set(vector) {
-
-                map.player.rotation.x = vector.x;
-                map.player.rotation.y = vector.y;
-                map.player.rotation.z = vector.z;
-            }
-        }
-    },
-    objects: []
-};
-var generateKeyboard = function generateKeyboard(array) {
-    var response = {};
-    array.forEach(function (el) {
-        return response = _extends({}, response, _defineProperty({}, el, { pressed: false, rate: 0, serverState: false }));
-    }, undefined);
-    return response;
-};
-var keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
-console.log(keyboard);
-
-var SCREEN_WIDTH = window.innerWidth;
-var SCREEN_HEIGHT = window.innerHeight;
+var camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 0.1, (0, _util.kmToM)(100000));
+_map.map.player.player = (0, _player2.default)(camera);
 var addEventListeners = function addEventListeners() {
-    document.addEventListener("keydown", _keyDown);
-    document.addEventListener("keyup", _keyUp);
+  document.addEventListener("keydown", _keyDown);
+  document.addEventListener("keyup", _keyUp);
 };
-var calculatePlayerMove = function calculatePlayerMove() {
-    // requestPlayerMove();
-    var _keyboard = _extends({}, keyboard),
-        w = _keyboard.w,
-        a = _keyboard.a,
-        s = _keyboard.s,
-        d = _keyboard.d,
-        q = _keyboard.q,
-        e = _keyboard.e,
-        space = _keyboard.space,
-        shift = _keyboard.shift;
+var run = function run() {
+  var gameContainer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.getElementById('game-container');
 
-    var damperStrength = 2 / 100;
-    var engineStrength = 5 / 100;
-    var maxSpeed = 5;
-    var maxReverse = 2;
-    var maxManouver = 2;
+  var ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+  var pointLight = new THREE.PointLight();
+  scene.add(ambientLight);
+  scene.add(pointLight);
+  scene.add((0, _models.StarCloud)({
+    density: 0.001,
+    coords: {
+      x: _map.map.x,
+      y: _map.map.y,
+      z: _map.map.z
+    }
+  }));
+  gameContainer.appendChild(renderer.domElement);
 
-    //W
-    w.serverState ? w.rate = Math.min(maxSpeed, w.rate + engineStrength) : w.rate = Math.max(0, w.rate - engineStrength);
-    player.translateZ(w.rate);
-    // w.rate !== 0 ? this.player.engines.scale.set(1, 1, w.rate / 3) : void 0;
-    // w.rate !== 0 ? (this.player.engines.children[0].material[0].opacity = 0.1 * (w.rate / 3)) : void 0;
-    //S
-    s.serverState ? s.rate = Math.min(maxReverse, s.rate + damperStrength) : s.rate = Math.max(0, s.rate - damperStrength);
-    player.translateZ(-s.rate);
-    //A
-    a.serverState ? a.rate = Math.min(maxManouver, a.rate + damperStrength) : a.rate = Math.max(0, a.rate - damperStrength);
-    player.rotateZ(a.rate * -0.01);
-    //D
-    d.serverState ? d.rate = Math.min(maxManouver, d.rate + damperStrength) : d.rate = Math.max(0, d.rate - damperStrength);
-    player.rotateZ(d.rate * 0.01);
-    //Q
-    q.serverState ? q.rate = Math.min(maxManouver, q.rate + damperStrength) : q.rate = Math.max(0, q.rate - damperStrength);
-    player.rotateY(q.rate * 0.008);
-    //E
-    e.serverState ? e.rate = Math.min(maxManouver, e.rate + damperStrength) : e.rate = Math.max(0, e.rate - damperStrength);
-    player.rotateY(e.rate * -0.008);
-    //SPACE
-    space.serverState ? space.rate = Math.min(maxManouver, space.rate + damperStrength) : space.rate = Math.max(0, space.rate - damperStrength);
-    player.rotateX(space.rate * -0.01);
-    //SHIFT
-    shift.serverState ? shift.rate = Math.min(maxManouver, shift.rate + damperStrength) : shift.rate = Math.max(0, shift.rate - damperStrength);
-    player.rotateX(shift.rate * 0.01);
+  (0, _map.loadJsonToMap)(_fakeData2.default);
+  loadMap();
+  animate();
+  addEventListeners();
 };
-var _keyDown = function _keyDown(e) {
-    var key = e.key === " " ? "space" : e.key.toLowerCase();
-    // keyboard[key] ? (keyboard[key].pressed = true) : void 0;
-    keyboard[key] ? keyboard[key].serverState = true : void 0;
+var loadMap = function loadMap() {
+  _map.map.objects.forEach(addObjToScene);
+  scene.add(_map.map.player.player);
 };
-var _keyUp = function _keyUp(e) {
-    var key = e.key === " " ? "space" : e.key.toLowerCase();
-    // keyboard[key] ? (keyboard[key].pressed = false) : void 0;
-    keyboard[key] ? keyboard[key].serverState = false : void 0;
-};
-var player = new THREE.Group();
-var game = function game() {
-    var gameContainer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.getElementById('game-container');
-
-    var ambientLight = new THREE.AmbientLight(0x404040, 0.5);
-    var pointLight = new THREE.PointLight();
-    scene.add(ambientLight);
-    scene.add(pointLight);
-    scene.add((0, _models.StarCloud)({ density: 0.001, coords: { x: map.x, y: map.y, z: map.z } }));
-    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    gameContainer.appendChild(renderer.domElement);
-    var geometry = new THREE.BoxGeometry(4, 2, 10);
-    var material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-    // var cube = new THREE.Mesh(geometry, material);
-    var earth = (0, _models.Planet)({ radius: kmToM(6371) });
-    player.add(new THREE.Mesh(geometry, material));
-    player.add(camera);
-    scene.add(player);
-    player.position.z = -1000;
-    camera.position.z = -15;
-    camera.position.y = 5;
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
-    map.objects.push(earth);
-    earth.position.z = kmToM(6371);
-    scene.add(earth);
-    animate();
-    addEventListeners();
+var addObjToScene = function addObjToScene(obj) {
+  if (!scene.getObjectById(obj.name)) scene.add(obj);
 };
 var animate = function animate() {
-    calculatePlayerMove();
-    map.player.coords.set(player.getWorldPosition());
-    map.player.rotation.set(player.getWorldRotation());
+  (0, _player.calculatePlayerMove)({
+    player: _map.map.player.player
+  });
 
-    // camera.position.set(playerLoc.x, playerLoc.y, playerLoc.z);
-    map.objects[0].rotation.x += 0.001;
-    map.objects[0].rotation.y += 0.001;
-    //Draw & Re-call//
-    SCREEN_WIDTH = window.innerWidth;
-    SCREEN_HEIGHT = window.innerHeight;
-    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-    camera.updateProjectionMatrix();
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+  // map.objects[0].rotation.x += 0.001;
+  _map.map.objects[0].rotation.y += 0.001;
+  //Draw & Re-call//
+  updateScreenResolution();
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
 };
 
-exports.default = game;
+exports.default = run;
 
 /***/ }),
 /* 3 */
@@ -46270,9 +46204,11 @@ Object.defineProperty(exports, 'StarCloud', {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Planet = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _three = __webpack_require__(0);
 
@@ -46280,12 +46216,31 @@ var THREE = _interopRequireWildcard(_three);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var defaultArgs = { radius: 10 };
+var defaultArgs = {
+  radius: 10,
+  position: {
+    x: 0,
+    y: 0,
+    z: 0
+  }
+};
 
 var Planet = exports.Planet = function Planet() {
-    var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultArgs;
+  var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultArgs;
 
-    return new THREE.Mesh(new THREE.SphereGeometry(args.radius, Math.max(8, args.radius / 100000), Math.max(8, args.radius / 100000)), new THREE.MeshBasicMaterial({ color: 0x00fff0, wireframe: true }));
+  var response = new THREE.Mesh(new THREE.SphereGeometry(args.radius, Math.max(8, args.radius / 100000), Math.max(8, args.radius / 100000)), new THREE.MeshPhongMaterial({
+    color: 0x00ff00,
+    wireframe: true,
+    transparent: true
+  }));
+
+  var _ref = _extends({}, args.position || defaultArgs.position),
+      x = _ref.x,
+      y = _ref.y,
+      z = _ref.z;
+
+  response.position.set(x, y, z);
+  return response;
 };
 
 /***/ }),
@@ -46339,6 +46294,429 @@ var StarCloud = exports.StarCloud = function StarCloud() {
 
 var calcStarCount = function calcStarCount(coords) {
     return typeof coords === "number" ? (coords.x + coords.y.coords.z) / 3 : (coords.x.max - coords.x.min + coords.y.max - coords.y.min + coords.z.max - coords.z.min) / 3;
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.keyboardListeners = exports.keyboard = exports.calculatePlayerMove = undefined;
+
+var _calculatePlayerMovement = __webpack_require__(7);
+
+Object.defineProperty(exports, 'calculatePlayerMove', {
+  enumerable: true,
+  get: function get() {
+    return _calculatePlayerMovement.calculatePlayerMove;
+  }
+});
+
+var _keyboard = __webpack_require__(8);
+
+Object.defineProperty(exports, 'keyboard', {
+  enumerable: true,
+  get: function get() {
+    return _keyboard.keyboard;
+  }
+});
+
+var _keyboardListeners = __webpack_require__(17);
+
+Object.defineProperty(exports, 'keyboardListeners', {
+  enumerable: true,
+  get: function get() {
+    return _keyboardListeners.keyboardListeners;
+  }
+});
+
+var _Player = __webpack_require__(9);
+
+exports.default = _Player.Player;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.calculatePlayerMove = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _ = __webpack_require__(6);
+
+var calculatePlayerMove = exports.calculatePlayerMove = function calculatePlayerMove(args) {
+  var _args = _extends({}, args),
+      player = _args.player;
+  // requestPlayerMove();
+
+
+  var _keyboard = _extends({}, _.keyboard),
+      w = _keyboard.w,
+      a = _keyboard.a,
+      s = _keyboard.s,
+      d = _keyboard.d,
+      q = _keyboard.q,
+      e = _keyboard.e,
+      space = _keyboard.space,
+      shift = _keyboard.shift;
+
+  var tempModifier = 500;
+  var damperStrength = 2 / 100;
+  var engineStrength = 5 * tempModifier / 100;
+  var maxSpeed = 5 * tempModifier;
+  var maxReverse = 2 * tempModifier;
+  var maxManouver = 2;
+
+  //W
+  w.serverState ? w.rate = Math.min(maxSpeed, w.rate + engineStrength) : w.rate = Math.max(0, w.rate - engineStrength);
+  player.translateZ(w.rate);
+  // w.rate !== 0 ? this.player.engines.scale.set(1, 1, w.rate / 3) : void 0;
+  // w.rate !== 0 ? (this.player.engines.children[0].material[0].opacity = 0.1 * (w.rate / 3)) : void 0;
+  //S
+  s.serverState ? s.rate = Math.min(maxReverse, s.rate + damperStrength) : s.rate = Math.max(0, s.rate - damperStrength);
+  player.translateZ(-s.rate);
+  //A
+  a.serverState ? a.rate = Math.min(maxManouver, a.rate + damperStrength) : a.rate = Math.max(0, a.rate - damperStrength);
+  player.rotateZ(a.rate * -0.01);
+  //D
+  d.serverState ? d.rate = Math.min(maxManouver, d.rate + damperStrength) : d.rate = Math.max(0, d.rate - damperStrength);
+  player.rotateZ(d.rate * 0.01);
+  //Q
+  q.serverState ? q.rate = Math.min(maxManouver, q.rate + damperStrength) : q.rate = Math.max(0, q.rate - damperStrength);
+  player.rotateY(q.rate * 0.008);
+  //E
+  e.serverState ? e.rate = Math.min(maxManouver, e.rate + damperStrength) : e.rate = Math.max(0, e.rate - damperStrength);
+  player.rotateY(e.rate * -0.008);
+  //SPACE
+  space.serverState ? space.rate = Math.min(maxManouver, space.rate + damperStrength) : space.rate = Math.max(0, space.rate - damperStrength);
+  player.rotateX(space.rate * -0.01);
+  //SHIFT
+  shift.serverState ? shift.rate = Math.min(maxManouver, shift.rate + damperStrength) : shift.rate = Math.max(0, shift.rate - damperStrength);
+  player.rotateX(shift.rate * 0.01);
+};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var generateKeyboard = function generateKeyboard(array) {
+  var response = {};
+  array.forEach(function (el) {
+    return response = _extends({}, response, _defineProperty({}, el, {
+      pressed: false,
+      rate: 0,
+      serverState: false
+    }));
+  }, undefined);
+  return response;
+};
+var keyboard = exports.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Player = undefined;
+
+var _three = __webpack_require__(0);
+
+var THREE = _interopRequireWildcard(_three);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var Player = exports.Player = function Player(camera) {
+  var player = new THREE.Group();
+  player.name = "Player";
+  var loader = new THREE.ObjectLoader();
+  var geometry = new THREE.BoxGeometry(4, 2, 10);
+  var material = new THREE.MeshPhongMaterial({
+    color: 0x00ff00
+  });
+  var cubeGeometry = new THREE.CylinderGeometry(0, 5, 10, 4, 4);
+  var cubeMaterial = new THREE.MeshPhongMaterial({
+    color: new THREE.Color('rgb(200,80,80)')
+  });
+  //model from clara.io (<3 <3 <3)
+  loader.load('/models/sg-light-destroyer-threejs/sg-light-destroyer.json', function (model) {
+    return player.add(model.rotateY(Math.PI));
+  });
+  // player.add(new THREE.Mesh(cubeGeometry, cubeMaterial));
+  var playerLight = new THREE.PointLight();
+  camera.position.z = -15;
+  camera.position.y = 5;
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
+  playerLight.position.z = -5;
+  player.add(playerLight);
+  player.add(camera);
+  return player;
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _kmToM = __webpack_require__(11);
+
+Object.defineProperty(exports, 'kmToM', {
+  enumerable: true,
+  get: function get() {
+    return _kmToM.kmToM;
+  }
+});
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var kmToM = exports.kmToM = function kmToM(km) {
+  return km * 1000;
+};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _map = __webpack_require__(13);
+
+Object.defineProperty(exports, "map", {
+  enumerable: true,
+  get: function get() {
+    return _map.map;
+  }
+});
+
+var _loadJsonToMap = __webpack_require__(15);
+
+Object.defineProperty(exports, "loadJsonToMap", {
+  enumerable: true,
+  get: function get() {
+    return _loadJsonToMap.loadJsonToMap;
+  }
+});
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.map = undefined;
+
+var _util = __webpack_require__(10);
+
+var map = exports.map = {
+  x: {
+    min: (0, _util.kmToM)(-100000),
+    max: (0, _util.kmToM)(100000)
+  },
+  y: {
+    min: (0, _util.kmToM)(-100000),
+    max: (0, _util.kmToM)(100000)
+  },
+  z: {
+    min: (0, _util.kmToM)(-100000),
+    max: (0, _util.kmToM)(100000)
+  },
+  getDimensions: function getDimensions() {
+    return {
+      x: map.x,
+      y: map.y,
+      z: map.z
+    };
+  },
+  player: {
+    player: null,
+    coords: {
+      get x() {
+        return map.player.player.position.x;
+      },
+      set x(x) {
+        map.player.player.position.x = x;
+      },
+      get y() {
+        return map.player.player.position.y;
+      },
+      set y(y) {
+        map.player.player.position.y = y;
+      },
+      get z() {
+        return map.player.player.position.z;
+      },
+      set z(z) {
+        map.player.player.position.z = z;
+      },
+      set: function set(vector) {
+        if (map.player.player) {
+          map.player.player.position.x = vector.x;
+          map.player.player.position.y = vector.y;
+          map.player.player.position.z = vector.z;
+        } else {
+          console.error("Attempted to set player coords but player was null");
+        }
+      }
+    },
+    rotation: {
+      x: function x() {
+        return map.player.player.rotation.x;
+      },
+      y: function y() {
+        return map.player.player.rotation.y;
+      },
+      z: function z() {
+        return map.player.player.rotation.z;
+      },
+      set: function set(vector) {
+        if (map.player.player) {
+          map.player.player.rotation.x = vector.x;
+          map.player.player.rotation.y = vector.y;
+          map.player.player.rotation.z = vector.z;
+        } else {
+          console.error("Attempted to set player rotation but player was null");
+        }
+      }
+    }
+  },
+  objects: []
+};
+console.log("Map requested", map);
+
+/***/ }),
+/* 14 */,
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.loadJsonToMap = undefined;
+
+var _ = __webpack_require__(12);
+
+var _util = __webpack_require__(10);
+
+var _models = __webpack_require__(3);
+
+var loadJsonToMap = exports.loadJsonToMap = function loadJsonToMap(json) {
+  loadPlanets(json.planets);
+  loadPlayer(json.player);
+};
+var loadPlanets = function loadPlanets(planets) {
+  planets.forEach(function (planet) {
+    convertCoords(planet.unit, planet.coords);
+    convertRadius(planet);
+    _.map.objects.push(new _models.Planet({
+      radius: planet.radius,
+      position: planet.coords
+    }));
+  });
+};
+var loadPlayer = function loadPlayer(player) {
+  convertCoords(player.unit, player.coords);
+  _.map.player.coords.set(player.coords);
+  _.map.player.rotation.set(player.rotation);
+};
+var convertRadius = function convertRadius(planet) {
+  if (planet.unit === "km") {
+    planet.radius = (0, _util.kmToM)(planet.radius);
+  }
+};
+var convertCoords = function convertCoords(unit, coords) {
+  if (unit === "km") {
+    var c = coords;
+    c.x = (0, _util.kmToM)(c.x);
+    c.y = (0, _util.kmToM)(c.y);
+    c.z = (0, _util.kmToM)(c.z);
+  }
+};
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = {"player":{"unit":"m","coords":{"x":-100000,"y":0,"z":5},"rotation":{"x":0,"y":0,"z":0}},"planets":[{"unit":"km","coords":{"x":7000,"y":7000,"z":7000},"radius":6371},{"unit":"km","coords":{"x":7000,"y":47000,"z":50000},"radius":10000}]}
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.keyboardListeners = exports._keyUp = exports._keyDown = undefined;
+
+var _ = __webpack_require__(6);
+
+var _keyDown = exports._keyDown = function _keyDown(e) {
+  var key = e.key === " " ? "space" : e.key.toLowerCase();
+  // keyboard[key] ? (keyboard[key].pressed = true) : void 0;
+  _.keyboard[key] ? _.keyboard[key].serverState = true : void 0;
+};
+var _keyUp = exports._keyUp = function _keyUp(e) {
+  var key = e.key === " " ? "space" : e.key.toLowerCase();
+  // keyboard[key] ? (keyboard[key].pressed = false) : void 0;
+  _.keyboard[key] ? _.keyboard[key].serverState = false : void 0;
+};
+var keyboardListeners = exports.keyboardListeners = {
+  _keyUp: _keyUp,
+  _keyDown: _keyDown
 };
 
 /***/ })
