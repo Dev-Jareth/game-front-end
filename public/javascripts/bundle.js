@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -46052,7 +46052,128 @@ function CanvasRenderer() {
 "use strict";
 
 
-var _game = __webpack_require__(2);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.keyboardListeners = exports.keyboard = exports.calculatePlayerMove = undefined;
+
+var _calculatePlayerMovement = __webpack_require__(9);
+
+Object.defineProperty(exports, 'calculatePlayerMove', {
+  enumerable: true,
+  get: function get() {
+    return _calculatePlayerMovement.calculatePlayerMove;
+  }
+});
+
+var _keyboard = __webpack_require__(10);
+
+Object.defineProperty(exports, 'keyboard', {
+  enumerable: true,
+  get: function get() {
+    return _keyboard.keyboard;
+  }
+});
+
+var _keyboardListeners = __webpack_require__(11);
+
+Object.defineProperty(exports, 'keyboardListeners', {
+  enumerable: true,
+  get: function get() {
+    return _keyboardListeners.keyboardListeners;
+  }
+});
+
+var _Player = __webpack_require__(12);
+
+exports.default = _Player.Player;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _kmToM = __webpack_require__(13);
+
+Object.defineProperty(exports, 'kmToM', {
+  enumerable: true,
+  get: function get() {
+    return _kmToM.kmToM;
+  }
+});
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _planet = __webpack_require__(7);
+
+Object.defineProperty(exports, 'Planet', {
+  enumerable: true,
+  get: function get() {
+    return _planet.Planet;
+  }
+});
+
+var _starCloud = __webpack_require__(8);
+
+Object.defineProperty(exports, 'StarCloud', {
+  enumerable: true,
+  get: function get() {
+    return _starCloud.StarCloud;
+  }
+});
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _map = __webpack_require__(14);
+
+Object.defineProperty(exports, "map", {
+  enumerable: true,
+  get: function get() {
+    return _map.map;
+  }
+});
+
+var _loadJsonToMap = __webpack_require__(15);
+
+Object.defineProperty(exports, "loadJsonToMap", {
+  enumerable: true,
+  get: function get() {
+    return _loadJsonToMap.loadJsonToMap;
+  }
+});
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _game = __webpack_require__(6);
 
 var _game2 = _interopRequireDefault(_game);
 
@@ -46062,7 +46183,7 @@ console.log("Hello World - Yarn Dev now working");
 (0, _game2.default)();
 
 /***/ }),
-/* 2 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46080,13 +46201,13 @@ var THREE = _interopRequireWildcard(_three);
 
 var _models = __webpack_require__(3);
 
-var _player = __webpack_require__(6);
+var _player = __webpack_require__(1);
 
 var _player2 = _interopRequireDefault(_player);
 
-var _util = __webpack_require__(10);
+var _util = __webpack_require__(2);
 
-var _map = __webpack_require__(12);
+var _map = __webpack_require__(4);
 
 var _fakeData = __webpack_require__(16);
 
@@ -46168,36 +46289,7 @@ var animate = function animate() {
 exports.default = run;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _planet = __webpack_require__(4);
-
-Object.defineProperty(exports, 'Planet', {
-  enumerable: true,
-  get: function get() {
-    return _planet.Planet;
-  }
-});
-
-var _starCloud = __webpack_require__(5);
-
-Object.defineProperty(exports, 'StarCloud', {
-  enumerable: true,
-  get: function get() {
-    return _starCloud.StarCloud;
-  }
-});
-
-/***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46222,14 +46314,24 @@ var defaultArgs = {
     x: 0,
     y: 0,
     z: 0
+  },
+  class: "Z"
+};
+var planetClass = {
+  M: {
+    color: 0x00ff00
+  },
+  Z: {
+    color: 0xaaaaaa
   }
 };
 
 var Planet = exports.Planet = function Planet() {
   var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultArgs;
 
+  var pclass = planetClass[args.class || defaultArgs.class];
   var response = new THREE.Mesh(new THREE.SphereGeometry(args.radius, Math.max(8, args.radius / 100000), Math.max(8, args.radius / 100000)), new THREE.MeshPhongMaterial({
-    color: 0x00ff00,
+    color: pclass.color,
     wireframe: true,
     transparent: true
   }));
@@ -46244,7 +46346,7 @@ var Planet = exports.Planet = function Planet() {
 };
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46297,50 +46399,7 @@ var calcStarCount = function calcStarCount(coords) {
 };
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.keyboardListeners = exports.keyboard = exports.calculatePlayerMove = undefined;
-
-var _calculatePlayerMovement = __webpack_require__(7);
-
-Object.defineProperty(exports, 'calculatePlayerMove', {
-  enumerable: true,
-  get: function get() {
-    return _calculatePlayerMovement.calculatePlayerMove;
-  }
-});
-
-var _keyboard = __webpack_require__(8);
-
-Object.defineProperty(exports, 'keyboard', {
-  enumerable: true,
-  get: function get() {
-    return _keyboard.keyboard;
-  }
-});
-
-var _keyboardListeners = __webpack_require__(17);
-
-Object.defineProperty(exports, 'keyboardListeners', {
-  enumerable: true,
-  get: function get() {
-    return _keyboardListeners.keyboardListeners;
-  }
-});
-
-var _Player = __webpack_require__(9);
-
-exports.default = _Player.Player;
-
-/***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46353,7 +46412,7 @@ exports.calculatePlayerMove = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _ = __webpack_require__(6);
+var _ = __webpack_require__(1);
 
 var calculatePlayerMove = exports.calculatePlayerMove = function calculatePlayerMove(args) {
   var _args = _extends({}, args),
@@ -46407,7 +46466,7 @@ var calculatePlayerMove = exports.calculatePlayerMove = function calculatePlayer
 };
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46435,7 +46494,36 @@ var generateKeyboard = function generateKeyboard(array) {
 var keyboard = exports.keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
 
 /***/ }),
-/* 9 */
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.keyboardListeners = exports._keyUp = exports._keyDown = undefined;
+
+var _ = __webpack_require__(1);
+
+var _keyDown = exports._keyDown = function _keyDown(e) {
+  var key = e.key === " " ? "space" : e.key.toLowerCase();
+  // keyboard[key] ? (keyboard[key].pressed = true) : void 0;
+  _.keyboard[key] ? _.keyboard[key].serverState = true : void 0;
+};
+var _keyUp = exports._keyUp = function _keyUp(e) {
+  var key = e.key === " " ? "space" : e.key.toLowerCase();
+  // keyboard[key] ? (keyboard[key].pressed = false) : void 0;
+  _.keyboard[key] ? _.keyboard[key].serverState = false : void 0;
+};
+var keyboardListeners = exports.keyboardListeners = {
+  _keyUp: _keyUp,
+  _keyDown: _keyDown
+};
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46480,27 +46568,7 @@ var Player = exports.Player = function Player(camera) {
 };
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _kmToM = __webpack_require__(11);
-
-Object.defineProperty(exports, 'kmToM', {
-  enumerable: true,
-  get: function get() {
-    return _kmToM.kmToM;
-  }
-});
-
-/***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46514,36 +46582,7 @@ var kmToM = exports.kmToM = function kmToM(km) {
 };
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _map = __webpack_require__(13);
-
-Object.defineProperty(exports, "map", {
-  enumerable: true,
-  get: function get() {
-    return _map.map;
-  }
-});
-
-var _loadJsonToMap = __webpack_require__(15);
-
-Object.defineProperty(exports, "loadJsonToMap", {
-  enumerable: true,
-  get: function get() {
-    return _loadJsonToMap.loadJsonToMap;
-  }
-});
-
-/***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46554,7 +46593,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.map = undefined;
 
-var _util = __webpack_require__(10);
+var _util = __webpack_require__(2);
 
 var map = exports.map = {
   x: {
@@ -46633,7 +46672,6 @@ var map = exports.map = {
 console.log("Map requested", map);
 
 /***/ }),
-/* 14 */,
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -46645,9 +46683,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.loadJsonToMap = undefined;
 
-var _ = __webpack_require__(12);
+var _ = __webpack_require__(4);
 
-var _util = __webpack_require__(10);
+var _util = __webpack_require__(2);
 
 var _models = __webpack_require__(3);
 
@@ -46661,7 +46699,8 @@ var loadPlanets = function loadPlanets(planets) {
     convertRadius(planet);
     _.map.objects.push(new _models.Planet({
       radius: planet.radius,
-      position: planet.coords
+      position: planet.coords,
+      class: planet.class
     }));
   });
 };
@@ -46688,36 +46727,7 @@ var convertCoords = function convertCoords(unit, coords) {
 /* 16 */
 /***/ (function(module, exports) {
 
-module.exports = {"player":{"unit":"m","coords":{"x":-100000,"y":0,"z":5},"rotation":{"x":0,"y":0,"z":0}},"planets":[{"unit":"km","coords":{"x":7000,"y":7000,"z":7000},"radius":6371},{"unit":"km","coords":{"x":7000,"y":47000,"z":50000},"radius":10000}]}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.keyboardListeners = exports._keyUp = exports._keyDown = undefined;
-
-var _ = __webpack_require__(6);
-
-var _keyDown = exports._keyDown = function _keyDown(e) {
-  var key = e.key === " " ? "space" : e.key.toLowerCase();
-  // keyboard[key] ? (keyboard[key].pressed = true) : void 0;
-  _.keyboard[key] ? _.keyboard[key].serverState = true : void 0;
-};
-var _keyUp = exports._keyUp = function _keyUp(e) {
-  var key = e.key === " " ? "space" : e.key.toLowerCase();
-  // keyboard[key] ? (keyboard[key].pressed = false) : void 0;
-  _.keyboard[key] ? _.keyboard[key].serverState = false : void 0;
-};
-var keyboardListeners = exports.keyboardListeners = {
-  _keyUp: _keyUp,
-  _keyDown: _keyDown
-};
+module.exports = {"player":{"unit":"m","coords":{"x":-100000,"y":0,"z":5},"rotation":{"x":0,"y":0,"z":0}},"planets":[{"unit":"km","coords":{"x":7000,"y":7000,"z":7000},"radius":6371,"class":"M"},{"unit":"km","coords":{"x":7000,"y":47000,"z":50000},"radius":10000}]}
 
 /***/ })
 /******/ ]);

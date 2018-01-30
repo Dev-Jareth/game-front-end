@@ -11,7 +11,8 @@ const loadPlanets = planets => {
     convertRadius(planet)
     map.objects.push(new Planet({
       radius: planet.radius,
-      position: planet.coords
+      position: planet.coords,
+      class: planet.class
     }))
   })
 }
