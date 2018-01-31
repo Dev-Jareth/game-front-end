@@ -1,0 +1,67 @@
+<style>
+  #login-pane{
+    background:#000;
+    color:#fff;
+    width:35vw;
+    height:65vh;
+    margin:auto;
+    margin-top:10vh;
+    text-align: center;
+    box-sizing: border-box;
+    padding:2%;
+    border-radius: 15px;
+  }
+  #login-pane .error{
+    box-sizing: border-box;
+    display: block;
+    border-radius: 5px;
+    padding:0.5em;
+    width:100%;
+    background: #a00;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-stretch: expanded;
+  }
+  #login-pane input{
+    background: #fff;
+    border:none;
+    border-radius: 5px;
+    padding:1em;
+    font-size: 1em;
+    box-sizing: border-box;
+    margin:5px 0;
+    width:100%;
+    transition-duration: 0.4s;
+  }
+  #login-pane label{
+    margin-top: 10%;
+    font-size: 2em;
+    font: roboto;
+  }
+  #login-pane input:focus{
+  }
+  #login-pane .submit{
+      margin-top:10%;
+      font-size: 2em;
+      font-weight: bold;
+      padding: 0.5em;
+  }
+
+</style>
+<div id="login-pane">
+  <h1>Login</h1>
+   {{#if error}}
+   <span class="error">{{error}}</span>
+   {{/if}}
+  <form method="post" action="/login">
+    <span class="input-group">
+      <label>Username</label>
+      <input type="text" placeholder="Email" name="email">
+    </span>
+      <span class="input-group">
+        <label>Password</label>
+        <input type="password" placeholder="password" name="password">
+      </span>
+      <input type="submit" class="submit" value="Login">
+  </form>
+</div>

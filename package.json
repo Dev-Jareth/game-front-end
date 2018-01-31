@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "build": "webpack",
-    "dev": "start webpack --watch & node app.js"
+    "dev": "start webpack --watch & nodemon app.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -13,7 +13,10 @@
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "hbs": "~4.0.1",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.0.2",
     "morgan": "~1.9.0",
+    "nodemon": "^1.14.11",
     "serve-favicon": "~2.4.5",
     "three": "^0.89.0"
   },
