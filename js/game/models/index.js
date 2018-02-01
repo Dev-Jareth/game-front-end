@@ -1,2 +1,2 @@
-export { Planet } from './planet'; 
-export { StarCloud } from './starCloud';
+export { Planet } from './Planet';
+export { StarCloud } from './StarCloud';

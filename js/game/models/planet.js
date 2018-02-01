@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 const defaultArgs = {
-  radius: 10,
+  radius: 10000,
   position: {
     x: 0,
     y: 0,
