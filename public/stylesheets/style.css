@@ -20,6 +20,17 @@ a {
   height:60vh;
   background:#aaa;
 }
+#login-container #error-section{
+  padding:0;
+}
+#login-container #error-section .error{
+  text-align: center;
+  color:#a00;
+  background:#faa;
+  font-size: 1.5em;
+  font-weight: bold;
+    padding: 5px;
+}
 .page__section{
   padding:5vh 0 0 0;
 }
