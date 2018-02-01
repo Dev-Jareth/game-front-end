@@ -2,14 +2,16 @@ import { user } from './';
 import cookie from 'json-cookie';
 import axios from 'axios';
 var onSuccess;
+
 const confirm = () => {
-  console.log("Checking Confirmation")
-  if (cookie.get("token"))
+  let token = cookie.get("token");
+  console.log("Cookie", token)
+  if (token)
     axios.get('/api/secure/test', {
       headers: {
-        token: cookie.get('token')
+        token
       }
-    }).then(onSuccess).catch(console.log)
+    }).then(onSuccess).catch(handleError)
 }
 const attemptLogin = (email, password) => {
   email = email.value;
@@ -18,16 +20,27 @@ const attemptLogin = (email, password) => {
   axios.post('/api/login', {
     email,
     password
-  }).then(response => cookie.set('token', response.data.token)).then(confirm)
+  }).then(response => cookie.set('token', response.data.token, {
+    expires: 1
+  })).then(confirm).catch(handleError)
+}
+const handleError = err => {
+  console.log(err)
+  if (err.response.status == 401) {
+    showError("Invalid Login Credentials")
+  }
+  if (err.response.status == 403) {
+    showError("Invalid Login Credentials")
+  }
 }
 const handleSubmit = e => {
   e.preventDefault();
-  console.log(e.target);
-  // document.getElementById("email").value
-  // document.getElementById("password").value
   attemptLogin(email, password)
 }
-
+const showError = (message = "An error occured") => {
+  console.log("Showing", message)
+  document.getElementById('error-section').innerHTML = `<div class="error">${message}</div>`;
+}
 export const login = cb => {
   onSuccess = () => {
     console.log("Success!")
