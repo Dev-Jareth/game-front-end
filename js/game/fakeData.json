@@ -31,5 +31,19 @@
       },
       "radius": 10000
     }
-  ]
+  ],
+  "asteroidBelts":[{
+    "unit":"km",
+    "coords":{
+      "x":7000,
+      "y":7000,
+      "z":7000
+    },
+    "asteroids":[
+      {"unit":"km","radius":50,"coords":{"x":10200,"y":0,"z":0}},
+      {"unit":"km","radius":150,"coords":{"x":-10200,"y":0,"z":0}},
+      {"unit":"km","radius":940,"coords":{"x":0,"y":10200,"z":0}},
+      {"unit":"km","radius":510,"coords":{"x":0,"y":-10200,"z":0}}
+    ]
+    }]
 }

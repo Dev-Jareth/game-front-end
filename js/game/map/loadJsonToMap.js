@@ -1,7 +1,8 @@
 import { map } from "./";
 import { kmToM } from "../util";
-import { Planet } from "../models";
+import { Asteroid, AsteroidBelt, Planet } from "../models";
 export const loadJsonToMap = json => {
+  loadAsteroidBelts(json.asteroidBelts)
   loadPlanets(json.planets)
   loadPlayer(json.player)
 }
@@ -14,6 +15,25 @@ const loadPlanets = planets => {
       position: planet.coords,
       class: planet.class
     }))
+  })
+}
+const loadAsteroidBelts = belts => {
+  belts.forEach(belt => {
+    convertCoords(belt.unit, belt.coords)
+    belt.asteroids.forEach(asteroid => {
+      convertCoords(asteroid.unit, asteroid.coords)
+      convertRadius(asteroid)
+    })
+    belt.asteroids = belt.asteroids.map(asteroid => new Asteroid({
+      radius: asteroid.radius,
+      position: asteroid.coords
+    }))
+    console.log(belt.asteroids);
+    let obj = new AsteroidBelt({
+      position: belt.coords,
+      asteroids: belt.asteroids
+    })
+    map.objects.push(obj)
   })
 }
 const loadPlayer = player => {
