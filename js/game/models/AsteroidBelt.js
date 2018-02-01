@@ -18,6 +18,7 @@ export const AsteroidBelt = args => {
   };
   console.log(args)
   let response = new THREE.Group();
+  args.asteroids.forEach(asteroid => response.add(asteroid));
   let {x, y, z} = {
     ...args.position
   };
