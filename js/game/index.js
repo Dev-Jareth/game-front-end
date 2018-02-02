@@ -32,11 +32,17 @@ const addEventListeners = () => {
 const run = (gameContainer = document.getElementById('game-container')) => {
   let ambientLight = new THREE.AmbientLight(0x404040, 0.5);
   let pointLight = new THREE.PointLight();
-  let boundingBox = new THREE.Mesh(new THREE.BoxGeometry(map.x.max - map.x.min, map.y.max - map.y.min, map.z.max - map.z.min, 100, 100, 100), new THREE.MeshBasicMaterial({
-    side: THREE.BackSide,
+  let boundingBox = new THREE.Mesh(new THREE.BoxGeometry(map.x.max - map.x.min, map.y.max - map.y.min, map.z.max - map.z.min, 10, 10, 10), new THREE.MeshBasicMaterial({
     wireframe: true,
     color: 0x002e78
   }))
+  boundingBox.add(new THREE.Mesh(new THREE.BoxGeometry(map.x.max - map.x.min, map.y.max - map.y.min, map.z.max - map.z.min), new THREE.MeshBasicMaterial({
+    side: THREE.BackSide,
+    wireframe: false,
+    color: 0x002e78,
+    transparent: true,
+    opacity: 0.3
+  })))
   scene.add(ambientLight);
   scene.add(pointLight);
   scene.add(boundingBox);
