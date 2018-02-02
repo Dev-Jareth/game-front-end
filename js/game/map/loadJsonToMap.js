@@ -13,7 +13,7 @@ const loadPlanets = planets => {
     map.objects.push(new Planet({
       radius: planet.radius,
       position: planet.coords,
-      class: planet.class
+      category: planet.class
     }))
   })
 }

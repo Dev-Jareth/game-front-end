@@ -1,1 +1,2 @@
-export { kmToM } from './kmToM.js'
+export { kmToM } from './kmToM'
+export { assign } from './assign'
