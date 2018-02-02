@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import config from '../config';
+import { planet as config } from '../config';
 const defaultArgs = {
   radius: 10000,
   position: {
@@ -9,22 +9,17 @@ const defaultArgs = {
   },
   class: "Z"
 }
-const planetClass = {
-  M: {
-    color: 0x00ff00
-  },
-  Z: {
-    color: 0xaaaaaa
-  }
-}
 
-export const Planet = (args = defaultArgs) => {
-  let pclass = planetClass[args.class || defaultArgs.class]
+export const Planet = (args) => {
+  args = {
+    ...defaultArgs, ...args
+  }
+  let pclass = config.classes[args.class]
   let response = new THREE.LOD();
   //generateMesh(args.radius, 60, pclass.color)
-  config.planet.lod.map(lod => response.addLevel(generateMesh(args.radius, lod.detail, pclass.color), args.radius + lod.distanceFromCirc))
+  config.lod.map(lod => response.addLevel(generateMesh(args.radius, lod.detail, pclass.color), args.radius + lod.distanceFromCirc))
   let {x, y, z} = {
-    ...args.position || defaultArgs.position
+    ...args.position
   }
   response.position.set(x, y, z);
   // response.updateMatrix();
