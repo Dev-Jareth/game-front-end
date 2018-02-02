@@ -26,11 +26,11 @@ const attemptLogin = (email, password) => {
 }
 const handleError = err => {
   console.log(err)
-  if (err.response.status == 401) {
-    showError("Invalid Login Credentials")
-  }
   if (err.response.status == 403) {
     showError("Invalid Login Credentials")
+  }
+  if (err.response.status == 498 || err.response.status == 499) {
+    console.error("Validation Failed:", err.response.data)
   }
 }
 const handleSubmit = e => {

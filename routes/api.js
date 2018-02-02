@@ -3,9 +3,9 @@ var JWT = require('jsonwebtoken');
 var router = express.Router();
 const validateToken = (req, res, next) => {
   let token = req.body.token || req.headers['token'] || req.headers['Authorization'];
-  if (!token) res.status(401).send("JWT Required");
+  if (!token) res.status(499).send("JWT Token Required");
   JWT.verify(token, process.env.SECRET_KEY, (err, data) => {
-    if (err) res.status(403).send("Invalid Token");
+    if (err) res.status(498).send("Invalid Token");
     else next();
   })
 }
