@@ -61,7 +61,7 @@ const animate = () => {
     player: map.player.player
   });
 
-  // map.objects[0].rotation.x += 0.001;
+  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
   map.objects[0].rotation.y += 0.001;
   //Draw & Re-call//
   updateScreenResolution()
