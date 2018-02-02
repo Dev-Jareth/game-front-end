@@ -30,6 +30,7 @@ const addEventListeners = () => {
   document.addEventListener("keyup", _keyUp);
 }
 const run = (gameContainer = document.getElementById('game-container')) => {
+  playerGUI.init(document.getElementById('player-gui'));
   let ambientLight = new THREE.AmbientLight(0x404040, 0.5);
   let pointLight = new THREE.PointLight();
   let boundingBox = new THREE.Mesh(new THREE.BoxGeometry(map.x.max - map.x.min, map.y.max - map.y.min, map.z.max - map.z.min, 10, 10, 10), new THREE.MeshBasicMaterial({
@@ -79,6 +80,12 @@ const animate = () => {
   updateScreenResolution()
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
+  playerGUI.update()
+}
+
+const playerGUI = {
+  init: parent => parent.innerHTML = `<span class="gui-wrapper"><span id="player-velocity"></span>m/s</span>`,
+  update: () => document.getElementById('player-velocity').innerHTML = map.player.player.userData.physics.velocity
 }
 
 export default run;

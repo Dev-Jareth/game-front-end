@@ -3,6 +3,8 @@ export const calculatePlayerMove = args => {
   let {player} = {
     ...args
   }
+  player.userData.physics = player.userData.physics || {};
+  let playerPhysics = player.userData.physics;
   // requestPlayerMove();
   let {w, a, s, d, q, e, space, shift} = {
     ...keyboard
@@ -56,4 +58,11 @@ export const calculatePlayerMove = args => {
     ? (shift.rate = Math.min(maxManouver, shift.rate + damperStrength))
     : (shift.rate = Math.max(0, shift.rate - damperStrength));
   player.rotateX(shift.rate * 0.01);
+
+  //SET physics
+  playerPhysics.rotation = playerPhysics.rotation || {};
+  playerPhysics.velocity = w.rate - s.rate;
+  playerPhysics.rotation.x = space.rate - shift.rate;
+  playerPhysics.rotation.y = q.rate - e.rate;
+  playerPhysics.rotation.z = a.rate - d.rate;
 };

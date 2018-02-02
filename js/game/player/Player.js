@@ -21,5 +21,6 @@ export const Player = camera => {
   playerLight.position.z = -5;
   player.add(playerLight)
   player.add(camera);
+  player.userData = {};
   return player;
 }
