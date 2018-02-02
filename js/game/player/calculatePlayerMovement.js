@@ -7,7 +7,7 @@ export const calculatePlayerMove = args => {
   let {w, a, s, d, q, e, space, shift} = {
     ...keyboard
   };
-  let tempModifier = 500;
+  let tempModifier = 5000;
   let damperStrength = 2 / 100;
   let engineStrength = 5 * tempModifier / 100;
   let maxSpeed = 5 * tempModifier;
