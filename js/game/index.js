@@ -30,6 +30,7 @@ const addEventListeners = () => {
   document.addEventListener("keyup", _keyUp);
 }
 const run = (gameContainer = document.getElementById('game-container')) => {
+  gameContainer.classList.remove("hidden");
   playerGUI.init(document.getElementById('player-gui'));
   let ambientLight = new THREE.AmbientLight(0x404040, 0.5);
   let pointLight = new THREE.PointLight();
