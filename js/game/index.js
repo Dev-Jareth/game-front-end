@@ -22,6 +22,7 @@ const updateScreenResolution = () => {
 const renderer = new THREE.WebGLRenderer({
   antialias: true
 });
+renderer.autoClear = false;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 0.1, kmToM(100000));
 map.player.player = Player(camera);
@@ -80,13 +81,51 @@ const animate = () => {
   //Draw & Re-call//
   updateScreenResolution()
   requestAnimationFrame(animate);
+  renderer.clear()
   renderer.render(scene, camera);
+  renderer.clearDepth()
   playerGUI.update()
 }
 
 const playerGUI = {
-  init: parent => parent.innerHTML = `<span class="gui-wrapper"><span id="player-velocity"></span>m/s</span>`,
-  update: () => document.getElementById('player-velocity').innerHTML = map.player.player.userData.physics.velocity
+  init: parent => {
+    updateScreenResolution()
+    playerGUI.scene = new THREE.Scene();
+    playerGUI.camera = new THREE.OrthographicCamera(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.1, 10000000);
+    let entities = {};
+    playerGUI.entities = entities;
+    entities.axis = new THREE.AxisHelper(SCREEN_HEIGHT / 10);
+    entities.axis.userData.setPosition = () => playerGUI.entities.axis.position.set(SCREEN_WIDTH * 9 / 10 + SCREEN_HEIGHT / 20, SCREEN_HEIGHT * 8 / 10 + SCREEN_HEIGHT / 20, 0);
+    playerGUI.scene.add(entities.axis);
+    let loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', font => {
+      entities.velocity = new THREE.TextGeometry("Velocity Here", font);playerGUI.scene.add(entities.velocity);
+    });
+
+
+
+    playerGUI.camera.position.z = SCREEN_HEIGHT / 5;
+
+  },
+  __render: () => renderer.render(playerGUI.scene, playerGUI.camera),
+  update: () => {
+    playerGUI.entities.axis.rotation.x += 0.01;
+    playerGUI.entities.axis.rotation.y += 0.01;
+    playerGUI.entities.axis.userData.setPosition();
+    playerGUI.__updateCamera()
+    playerGUI.__render()
+  },
+  __updateCamera: () => {
+    playerGUI.camera.left = 0
+    playerGUI.camera.right = SCREEN_WIDTH
+    playerGUI.camera.top = 0
+    playerGUI.camera.bottom = SCREEN_HEIGHT
+    playerGUI.camera.updateProjectionMatrix();
+  }
+}
+//velocity => map.player.player.userData.physics.velocity
+const addAxis = () => {
+
 }
 
 export default run;
