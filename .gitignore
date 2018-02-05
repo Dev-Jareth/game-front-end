@@ -8,7 +8,6 @@
 
 # production
 /build
-*/javascripts/bundle*
 
 # misc
 .DS_Store
