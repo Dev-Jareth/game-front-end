@@ -30,9 +30,9 @@ const addEventListeners = () => {
   document.addEventListener("keydown", _keyDown);
   document.addEventListener("keyup", _keyUp);
 }
-const run = (gameContainer = document.getElementById('game-container')) => {
+const run = async (gameContainer = document.getElementById('game-container')) => {
   gameContainer.classList.remove("hidden");
-  playerGUI.init(document.getElementById('player-gui'));
+  await playerGUI.init(document.getElementById('player-gui'));
   let ambientLight = new THREE.AmbientLight(0x404040, 0.5);
   let pointLight = new THREE.PointLight();
   let boundingBox = new THREE.Mesh(new THREE.BoxGeometry(map.x.max - map.x.min, map.y.max - map.y.min, map.z.max - map.z.min, 10, 10, 10), new THREE.MeshBasicMaterial({
@@ -88,22 +88,33 @@ const animate = () => {
 }
 
 const playerGUI = {
-  init: parent => {
+  init: async parent => {
+    let loadFont = font => new Promise((resolve, reject) => {
+      let loader = new THREE.FontLoader();
+      loader.load(font, resolve, null, reject)
+    })
+    let font = await loadFont('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json')
     updateScreenResolution()
     playerGUI.scene = new THREE.Scene();
     playerGUI.camera = new THREE.OrthographicCamera(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.1, 10000000);
     let entities = {};
     playerGUI.entities = entities;
     entities.axis = new THREE.AxisHelper(SCREEN_HEIGHT / 10);
+    entities.velocity = new THREE.Mesh(new THREE.TextGeometry(0, {
+      font,
+      size: 60
+    }), new THREE.MeshBasicMaterial({
+      color: 0xffffff
+    }));
+    entities.velocity.rotation.x = Math.PI;
     entities.axis.userData.setPosition = () => playerGUI.entities.axis.position.set(SCREEN_WIDTH * 9 / 10 + SCREEN_HEIGHT / 20, SCREEN_HEIGHT * 8 / 10 + SCREEN_HEIGHT / 20, 0);
+    entities.velocity.userData.setPosition = () => playerGUI.entities.velocity.position.set(SCREEN_WIDTH * 1 / 10, SCREEN_HEIGHT * 9 / 10, 0);
+    entities.velocity.userData.update = () => playerGUI.entities.velocity.geometry.parameters.text != map.player.player.userData.physics.velocity ? playerGUI.entities.velocity.geometry = new THREE.TextGeometry(map.player.player.userData.physics.velocity, {
+      font,
+      size: 60
+    }) : void (0)
     playerGUI.scene.add(entities.axis);
-    let loader = new THREE.FontLoader();
-    loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', font => {
-      entities.velocity = new THREE.TextGeometry("Velocity Here", font);playerGUI.scene.add(entities.velocity);
-    });
-
-
-
+    playerGUI.scene.add(entities.velocity);
     playerGUI.camera.position.z = SCREEN_HEIGHT / 5;
 
   },
@@ -112,6 +123,8 @@ const playerGUI = {
     playerGUI.entities.axis.rotation.x += 0.01;
     playerGUI.entities.axis.rotation.y += 0.01;
     playerGUI.entities.axis.userData.setPosition();
+    playerGUI.entities.velocity.userData.setPosition();
+    playerGUI.entities.velocity.userData.update();
     playerGUI.__updateCamera()
     playerGUI.__render()
   },
@@ -123,7 +136,6 @@ const playerGUI = {
     playerGUI.camera.updateProjectionMatrix();
   }
 }
-//velocity => map.player.player.userData.physics.velocity
 const addAxis = () => {
 
 }
