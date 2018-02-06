@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Planet, StarCloud } from './models';
-import Player, { calculatePlayerMove, keyboard, keyboardListeners } from './player';
-import { kmToM } from './util';
+import Player, { camera, calculatePlayerMove, keyboard, keyboardListeners } from './player';
+import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution } from './util';
 import { map, loadJsonToMap } from './map';
 /*######Debug######*/
 window.map = map;
@@ -10,11 +10,8 @@ import jsonData from './fakeData.json';
 const {_keyUp, _keyDown} = {
   ...keyboardListeners
 };
-var SCREEN_WIDTH = 0;
-var SCREEN_HEIGHT = 0;
-const updateScreenResolution = () => {
-  SCREEN_WIDTH = window.innerWidth;
-  SCREEN_HEIGHT = window.innerHeight;
+const updateResolution = () => {
+  updateScreenResolution()
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
   camera.updateProjectionMatrix();
@@ -24,8 +21,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.autoClear = false;
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 0.1, kmToM(100000));
-map.player.player = Player(camera);
+map.player.player = Player();
 const addEventListeners = () => {
   document.addEventListener("keydown", _keyDown);
   document.addEventListener("keyup", _keyUp);
@@ -79,7 +75,7 @@ const animate = () => {
   map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
   map.objects[0].rotation.y += 0.001;
   //Draw & Re-call//
-  updateScreenResolution()
+  updateResolution()
   requestAnimationFrame(animate);
   renderer.clear()
   renderer.render(scene, camera);
@@ -135,9 +131,6 @@ const playerGUI = {
     playerGUI.camera.bottom = SCREEN_HEIGHT
     playerGUI.camera.updateProjectionMatrix();
   }
-}
-const addAxis = () => {
-
 }
 
 export default run;

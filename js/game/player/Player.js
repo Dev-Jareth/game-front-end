@@ -1,7 +1,8 @@
 import * as THREE from 'three';
+import { camera } from './';
 const loader = new THREE.ObjectLoader();
 
-export const Player = camera => {
+export const Player = () => {
   var player = new THREE.Group();
   player.name = "Player"
   //model from clara.io (<3 <3 <3)
