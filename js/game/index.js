@@ -95,7 +95,10 @@ const playerGUI = {
     playerGUI.camera = new THREE.OrthographicCamera(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.1, 10000000);
     let entities = {};
     playerGUI.entities = entities;
-    entities.axis = new THREE.AxisHelper(SCREEN_HEIGHT / 10);
+    entities.axis = new THREE.Group()
+    let temp = new THREE.AxisHelper(SCREEN_HEIGHT / 10);
+    temp.rotation.x = Math.PI;
+    entities.axis.add(temp);
     entities.velocity = new THREE.Mesh(new THREE.TextGeometry(0, {
       font,
       size: 60
@@ -105,6 +108,9 @@ const playerGUI = {
     entities.velocity.rotation.x = Math.PI;
     entities.axis.userData.setPosition = () => playerGUI.entities.axis.position.set(SCREEN_WIDTH * 9 / 10 + SCREEN_HEIGHT / 20, SCREEN_HEIGHT * 8 / 10 + SCREEN_HEIGHT / 20, 0);
     entities.velocity.userData.setPosition = () => playerGUI.entities.velocity.position.set(SCREEN_WIDTH * 1 / 10, SCREEN_HEIGHT * 9 / 10, 0);
+    entities.axis.userData.update = () => {
+      playerGUI.entities.axis.rotation.copy(map.player.player.rotation);
+    }
     entities.velocity.userData.update = () => playerGUI.entities.velocity.geometry.parameters.text != map.player.player.userData.physics.velocity ? playerGUI.entities.velocity.geometry = new THREE.TextGeometry(map.player.player.userData.physics.velocity, {
       font,
       size: 60
@@ -116,9 +122,8 @@ const playerGUI = {
   },
   __render: () => renderer.render(playerGUI.scene, playerGUI.camera),
   update: () => {
-    playerGUI.entities.axis.rotation.x += 0.01;
-    playerGUI.entities.axis.rotation.y += 0.01;
     playerGUI.entities.axis.userData.setPosition();
+    playerGUI.entities.axis.userData.update();
     playerGUI.entities.velocity.userData.setPosition();
     playerGUI.entities.velocity.userData.update();
     playerGUI.__updateCamera()
