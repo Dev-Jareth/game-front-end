@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Planet, StarCloud } from './models';
-import Player, { camera, calculatePlayerMove, keyboard, keyboardListeners } from './player';
+import player, { camera, calculatePlayerMove, keyboard, keyboardListeners } from './player';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution } from './util';
 import { map, loadJsonToMap } from './map';
 /*######Debug######*/
@@ -21,7 +21,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.autoClear = false;
 const scene = new THREE.Scene();
-map.player.player = Player();
+map.player.player = player;
 const addEventListeners = () => {
   document.addEventListener("keydown", _keyDown);
   document.addEventListener("keyup", _keyUp);
@@ -68,9 +68,7 @@ const addObjToScene = obj => {
   if (!scene.getObjectById(obj.name)) scene.add(obj);
 }
 const animate = () => {
-  calculatePlayerMove({
-    player: map.player.player
-  });
+  calculatePlayerMove();
 
   map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
   map.objects[0].rotation.y += 0.001;

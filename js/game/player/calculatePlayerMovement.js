@@ -1,8 +1,5 @@
-import { keyboard } from './'
+import player, { keyboard } from './'
 export const calculatePlayerMove = args => {
-  let {player} = {
-    ...args
-  }
   player.userData.physics = player.userData.physics || {};
   let playerPhysics = player.userData.physics;
   // requestPlayerMove();
