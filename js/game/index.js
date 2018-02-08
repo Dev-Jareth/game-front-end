@@ -67,8 +67,11 @@ const loadMap = () => {
 const addObjToScene = obj => {
   if (!scene.getObjectById(obj.uuid)) scene.add(obj);
 }
-const animate = () => {
-  calculatePlayerMove();
+let mso = 0;
+const animate = ms => {
+  let delta = (ms - mso) / 1000
+  mso = ms;
+  calculatePlayerMove(delta || 0);
 
   map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
   map.objects[0].rotation.y += 0.001;
