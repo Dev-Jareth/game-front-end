@@ -65,7 +65,7 @@ const loadMap = () => {
   scene.add(map.player.player);
 }
 const addObjToScene = obj => {
-  if (!scene.getObjectById(obj.name)) scene.add(obj);
+  if (!scene.getObjectById(obj.uuid)) scene.add(obj);
 }
 const animate = () => {
   calculatePlayerMove();
