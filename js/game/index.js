@@ -19,6 +19,7 @@ let mso = 0;
 const addEventListeners = () => {
   document.addEventListener("keydown", keyboardListeners._keyDown);
   document.addEventListener("keyup", keyboardListeners._keyUp);
+  window.addEventListener('resize', updateResolution);
 }
 const updateResolution = () => {
   updateScreenResolution()
@@ -41,7 +42,6 @@ const animate = ms => {
   //Update LOD objects to show correct detail
   map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
   //Draw & Re-call//
-  updateResolution()
   requestAnimationFrame(animate);
   renderer.clear()
   renderer.render(scene, camera);
@@ -49,6 +49,7 @@ const animate = ms => {
   playerGUI.update(ms)
 }
 const init = gameContainer => {
+  updateResolution()
   gameContainer.classList.remove("hidden");
   gameContainer.appendChild(renderer.domElement);
   let boundingBox = new THREE.Mesh(new THREE.BoxGeometry(map.x.max - map.x.min, map.y.max - map.y.min, map.z.max - map.z.min, 10, 10, 10), new THREE.MeshBasicMaterial({
