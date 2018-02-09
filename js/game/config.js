@@ -1,5 +1,7 @@
 import { kmToM } from './util';
-
+export const settings = {
+  debugMode: false
+}
 export const planet = {
   lod: [
     {
@@ -29,5 +31,6 @@ export const planet = {
   }
 }
 export default {
-  planet
+  planet,
+  settings
 }

@@ -1,4 +1,5 @@
 import { kmToM } from '../util';
+import { print, printErr } from '../util';
 export const map = {
   x: {
     min: kmToM(-100000),
@@ -44,7 +45,7 @@ export const map = {
           map.player.player.position.y = vector.y;
           map.player.player.position.z = vector.z;
         } else {
-          console.error("Attempted to set player coords but player was null")
+          printErr("Attempted to set player coords but player was null")
         }
       }
     },
@@ -58,11 +59,11 @@ export const map = {
           map.player.player.rotation.y = vector.y;
           map.player.player.rotation.z = vector.z;
         } else {
-          console.error("Attempted to set player rotation but player was null")
+          printErr("Attempted to set player rotation but player was null")
         }
       }
     },
   },
   objects: []
 }
-console.log("Map requested", map)
+print("Map requested", map)

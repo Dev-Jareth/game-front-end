@@ -28,7 +28,6 @@ const loadAsteroidBelts = belts => {
       radius: asteroid.radius,
       position: asteroid.coords
     }))
-    console.log(belt.asteroids);
     let obj = new AsteroidBelt({
       position: belt.coords,
       asteroids: belt.asteroids
