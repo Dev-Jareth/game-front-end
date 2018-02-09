@@ -81,7 +81,7 @@ const animate = ms => {
   renderer.clear()
   renderer.render(scene, camera);
   renderer.clearDepth()
-  playerGUI.update()
+  playerGUI.update(ms)
 }
 
 const playerGUI = {
@@ -94,6 +94,8 @@ const playerGUI = {
     updateScreenResolution()
     playerGUI.scene = new THREE.Scene();
     playerGUI.camera = new THREE.OrthographicCamera(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.1, 10000000);
+    playerGUI.lastRestrictedUpdate = 0;
+    playerGUI.restrictedUpdateRate = 1 / 3;
     let entities = {};
     playerGUI.entities = entities;
     entities.axis = new THREE.Group()
@@ -112,21 +114,26 @@ const playerGUI = {
     entities.axis.userData.update = () => {
       playerGUI.entities.axis.rotation.copy(map.player.player.rotation);
     }
-    entities.velocity.userData.update = () => playerGUI.entities.velocity.geometry.parameters.text != map.player.player.userData.physics.velocity ? playerGUI.entities.velocity.geometry = new THREE.TextGeometry(map.player.player.userData.physics.velocity, {
+    entities.velocity.userData.update = () => playerGUI.entities.velocity.geometry.parameters.text == map.player.player.userData.physics.velocity ? void (0) : playerGUI.entities.velocity.geometry = new THREE.TextGeometry(map.player.player.userData.physics.velocity, {
       font,
       size: 60
-    }) : void (0)
+    })
     playerGUI.scene.add(entities.axis);
     playerGUI.scene.add(entities.velocity);
     playerGUI.camera.position.z = SCREEN_HEIGHT / 5;
 
   },
   __render: () => renderer.render(playerGUI.scene, playerGUI.camera),
-  update: () => {
+  update: ms => {
+
     playerGUI.entities.axis.userData.setPosition();
     playerGUI.entities.axis.userData.update();
     playerGUI.entities.velocity.userData.setPosition();
-    playerGUI.entities.velocity.userData.update();
+    //Restricted Updates
+    if ((ms - playerGUI.lastRestrictedUpdate) / 1000 >= playerGUI.restrictedUpdateRate) {
+      playerGUI.lastRestrictedUpdate = ms;
+      playerGUI.entities.velocity.userData.update();
+    }
     playerGUI.__updateCamera()
     playerGUI.__render()
   },
