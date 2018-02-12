@@ -31,7 +31,7 @@ const addEventListeners = () => {
   window.addEventListener('resize', updateResolution);
 }
 const setMouseTarget = t => {
-  if ((!t && !currentMouseTarget) || (t && currentMouseTarget && currentMouseTarget.object.uuid === currentMouseTarget.object.uuid)) {
+  if ((!t && !currentMouseTarget) || (t && currentMouseTarget && currentMouseTarget.object.uuid === t.object.uuid)) {
     print("No new target and no current target OR new target is already set")
     return; //Do nothing
   }
@@ -43,7 +43,7 @@ const setMouseTarget = t => {
   }
   if (t && currentMouseTarget) {
     print("New target is set... resetting old target material")
-    // currentMouseTarget.object.material = currentMouseTarget.object.userData.oldMaterial; //reset material
+    currentMouseTarget.object.material = currentMouseTarget.object.userData.oldMaterial; //reset material
     currentMouseTarget = t; //set new object
     t.object.userData.oldMaterial = t.object.material; //store material for later
     return
