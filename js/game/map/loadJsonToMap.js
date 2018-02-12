@@ -1,5 +1,5 @@
 import { map } from "./";
-import { kmToM } from "../util";
+import { kmToM, print } from "../util";
 import { Asteroid, AsteroidBelt, Planet } from "../models";
 export const loadJsonToMap = json => {
   loadAsteroidBelts(json.asteroidBelts)
@@ -7,6 +7,7 @@ export const loadJsonToMap = json => {
   loadPlayer(json.player)
 }
 const loadPlanets = planets => {
+  if (!(planets instanceof Array)) return print("planets was not of Array");
   planets.forEach(planet => {
     convertCoords(planet.unit, planet.coords)
     convertRadius(planet)
@@ -18,6 +19,7 @@ const loadPlanets = planets => {
   })
 }
 const loadAsteroidBelts = belts => {
+  if (!(belts instanceof Array)) return print("(asteroid) belts was not of Array");
   belts.forEach(belt => {
     convertCoords(belt.unit, belt.coords)
     belt.asteroids.forEach(asteroid => {
@@ -36,6 +38,7 @@ const loadAsteroidBelts = belts => {
   })
 }
 const loadPlayer = player => {
+  if (!player) return print("planets was not defined");
   convertCoords(player.unit, player.coords)
   map.player.coords.set(player.coords)
   map.player.rotation.set(player.rotation)
