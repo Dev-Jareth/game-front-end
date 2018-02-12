@@ -1,5 +1,6 @@
 var express = require('express');
 var JWT = require('jsonwebtoken');
+var user = require('../data/user');
 var router = express.Router();
 const validateToken = (req, res, next) => {
   let token = req.body.token || req.headers['token'] || req.headers['Authorization'];
@@ -14,14 +15,11 @@ const validateToken = (req, res, next) => {
 router.post('/login', (req, res, next) => {
   let email = req.body.email;
   let password = req.body.password;
-  let user = {
-    email,
-    displayName: "bob name"
-  }
-  if (email == "email" && password == "password")
+
+  if (user.validateUser(email, password))
     res.json({
       success: true,
-      token: JWT.sign(user, process.env.SECRET_KEY, {
+      token: JWT.sign(user.getUserFacadeByEmail(email), process.env.SECRET_KEY, {
         expiresIn: 3600
       })
     });

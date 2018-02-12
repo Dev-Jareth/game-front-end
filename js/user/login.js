@@ -1,17 +1,18 @@
 import { user } from './';
+import jwt from 'jsonwebtoken';
 import cookie from 'json-cookie';
 import axios from 'axios';
 var onSuccess;
 
 const confirm = () => {
   let token = cookie.get("token");
-  console.log("Cookie", token)
+  console.log("Cookie", jwt.decode(token))
   if (token)
     axios.get('/api/secure/test', {
       headers: {
         token
       }
-    }).then(onSuccess).catch(handleError)
+    }).then(() => onSuccess(jwt.decode(token))).catch(handleError)
 }
 const attemptLogin = (email, password) => {
   email = email.value;
@@ -42,10 +43,10 @@ const showError = (message = "An error occured") => {
   document.getElementById('error-section').innerHTML = `<div class="error">${message}</div>`;
 }
 export const login = cb => {
-  onSuccess = () => {
-    console.log("Success!")
+  onSuccess = user => {
+    console.log("Login Succeeded")
     clear();
-    cb();
+    cb(user);
   };
   document.getElementById("login-container").addEventListener("submit", handleSubmit)
   confirm();

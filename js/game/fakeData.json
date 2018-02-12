@@ -1,17 +1,4 @@
 {
-  "player": {
-    "unit":"m",
-    "coords": {
-      "x": -100000,
-      "y": 0,
-      "z": 5
-    },
-    "rotation":{
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
-  },
   "planets": [{
       "unit": "km",
       "coords": {

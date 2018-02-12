@@ -116,8 +116,12 @@ const init = gameContainer => {
     }
   }))
 }
-const run = async (gameContainer = document.getElementById('game-container')) => {
+const run = async user => {
+  let gameContainer = document.getElementById('game-container')
   init(gameContainer)
+  loadJsonToMap({
+    player: user
+  });
   loadJsonToMap(jsonData);
   loadMap();
   addEventListeners();
