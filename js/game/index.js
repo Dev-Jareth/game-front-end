@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { Planet, StarCloud } from './models';
 import player, { camera, calculatePlayerMove, keyboard, keyboardListeners, playerGUI, setGUIRenderer } from './player';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution, print, printErr } from './util';
+import * as Socket from './websocket/';
 import { map, loadJsonToMap } from './map';
-import { baseSocketUrl } from './config';
 import jsonData from './fakeData.json';
 /*######Debug######*/
 // window.map = map;
@@ -119,17 +119,16 @@ const init = gameContainer => {
     }
   }))
 }
-const run = async user => {
+const run = async token => {
   let gameContainer = document.getElementById('game-container')
-  let ws = new WebSocket(baseSocketUrl);
-  ws.onerror = () => print('WebSocket error');
-  ws.onopen = () => print('WebSocket connection established');
-  ws.onmessage = message => console.log('WebSocket message recieved', JSON.parse(message.data));
-  ws.onclose = () => print('WebSocket connection closed');
+  Socket.subscribe("Request-Authentication", () => Socket.sendMessage("Authentication", token))
+  Socket.subscribe("Authenticated", () => console.log("Socket connection authenticated"))
+  Socket.subscribe("Authentication-Refused", () => console.log("Socket refused authentication"))
+  Socket.connect();
   init(gameContainer)
-  loadJsonToMap({
-    player: user
-  });
+  // loadJsonToMap({
+  //   player: user
+  // });
   loadJsonToMap(jsonData);
   loadMap();
   addEventListeners();
