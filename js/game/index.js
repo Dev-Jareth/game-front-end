@@ -10,7 +10,8 @@ import jsonData from './fakeData.json';
 //Variables
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({
-  antialias: true
+  antialias: true,
+  logarithmicDepthBuffer: true
 });
 const raycaster = new THREE.Raycaster()
 const mouse = new THREE.Vector2()
@@ -82,7 +83,7 @@ const animate = ms => {
   //Move player
   calculatePlayerMove(delta || 0);
   //Update LOD objects to show correct detail
-  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
+  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void(0))
   //Draw & Re-call//
   requestAnimationFrame(animate);
   renderer.clear()
@@ -107,7 +108,8 @@ const init = gameContainer => {
   })))
   scene.add(new THREE.AmbientLight(0x404040, 0.5));
   scene.add(new THREE.PointLight());
-  scene.add(boundingBox);scene.add(StarCloud({
+  scene.add(boundingBox);
+  scene.add(StarCloud({
     density: 0.001,
     coords: {
       x: map.x,
