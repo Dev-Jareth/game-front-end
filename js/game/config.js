@@ -1,10 +1,14 @@
 import { kmToM } from './util';
+import { host } from '../config';
+export const baseSocketUrl = `ws://${host}/socket`;
 export const settings = {
   debugMode: false
 }
+export const socket = {
+
+}
 export const planet = {
-  lod: [
-    {
+  lod: [{
       distanceFromCirc: kmToM(100000),
       detail: 1
     },

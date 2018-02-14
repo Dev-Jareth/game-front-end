@@ -1,4 +1,5 @@
-const baseUrl = 'http://localhost:3000'
+export const host = 'localhost:3000'
+const baseUrl = `http://${host}`
 const httpMethods = Object.freeze({ POST: 'post', GET: 'get' })
 export default {
   url: {

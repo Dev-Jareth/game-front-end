@@ -3,6 +3,7 @@ import { Planet, StarCloud } from './models';
 import player, { camera, calculatePlayerMove, keyboard, keyboardListeners, playerGUI, setGUIRenderer } from './player';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution, print, printErr } from './util';
 import { map, loadJsonToMap } from './map';
+import { baseSocketUrl } from './config';
 import jsonData from './fakeData.json';
 /*######Debug######*/
 // window.map = map;
@@ -120,6 +121,11 @@ const init = gameContainer => {
 }
 const run = async user => {
   let gameContainer = document.getElementById('game-container')
+  let ws = new WebSocket(baseSocketUrl);
+  ws.onerror = () => print('WebSocket error');
+  ws.onopen = () => print('WebSocket connection established');
+  ws.onmessage = message => console.log('WebSocket message recieved', JSON.parse(message.data));
+  ws.onclose = () => print('WebSocket connection closed');
   init(gameContainer)
   loadJsonToMap({
     player: user

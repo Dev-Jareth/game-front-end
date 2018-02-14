@@ -16,7 +16,8 @@
     "json-cookie": "^1.0.0",
     "jsonwebtoken": "^8.1.1",
     "serve-favicon": "~2.4.5",
-    "three": "^0.89.0"
+    "three": "^0.89.0",
+    "ws": "^4.0.0"
   },
   "devDependencies": {
     "webpack": "^3.10.0",
