@@ -1,5 +1,4 @@
 import { user } from './';
-import jwt from 'jsonwebtoken';
 import cookie from 'json-cookie';
 import config from '../config'
 import axios from 'axios';
@@ -7,14 +6,13 @@ var onSuccess;
 
 const confirm = () => {
   let token = cookie.get("token");
-  console.log("Cookie", jwt.decode(token))
   let checkLogin = config.url.checkLogin;
   if (token)
     axios[checkLogin.method](checkLogin.path, {
       headers: {
         token
       }
-    }).then(() => onSuccess(jwt.decode(token))).catch(handleError)
+    }).then(() => onSuccess(token)).catch(handleError)
 }
 const attemptLogin = (email, password) => {
   email = email.value;
