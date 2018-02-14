@@ -1,14 +1,16 @@
 import { user } from './';
 import jwt from 'jsonwebtoken';
 import cookie from 'json-cookie';
+import config from '../config'
 import axios from 'axios';
 var onSuccess;
 
 const confirm = () => {
   let token = cookie.get("token");
   console.log("Cookie", jwt.decode(token))
+  let checkLogin = config.url.checkLogin;
   if (token)
-    axios.get('/api/secure/test', {
+    axios[checkLogin.method](checkLogin.path, {
       headers: {
         token
       }
@@ -18,7 +20,8 @@ const attemptLogin = (email, password) => {
   email = email.value;
   password = password.value;
   console.log(`Attempting Login with ${email} and ${password}`)
-  axios.post('/api/login', {
+  let loginUrl = config.url.login;
+  axios[loginUrl.method](loginUrl.path, {
     email,
     password
   }).then(response => cookie.set('token', response.data.token, {
