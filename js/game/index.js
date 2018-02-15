@@ -3,6 +3,7 @@ import { Planet, StarCloud } from './models';
 import player, { camera, calculatePlayerMove, keyboard, keyboardListeners, playerGUI, setGUIRenderer } from './player';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution, print, printErr } from './util';
 import * as Socket from './websocket/';
+import { currentMouseTarget, raycastListener } from './raycast';
 import { map, loadJsonToMap } from './map';
 import jsonData from './fakeData.json';
 /*######Debug######*/
@@ -14,9 +15,6 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
   logarithmicDepthBuffer: true
 });
-const raycaster = new THREE.Raycaster()
-const mouse = new THREE.Vector2()
-var currentMouseTarget;
 renderer.autoClear = false;
 map.player.player = player;
 let mso = 0;
@@ -24,40 +22,8 @@ let mso = 0;
 const addEventListeners = () => {
   document.addEventListener("keydown", keyboardListeners._keyDown);
   document.addEventListener("keyup", keyboardListeners._keyUp);
-  document.addEventListener("mousemove", event => {
-    mouse.x = (event.clientX / SCREEN_WIDTH) * 2 - 1;
-    mouse.y = -(event.clientY / SCREEN_HEIGHT) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    setMouseTarget(raycaster.intersectObjects(map.objects)[0])
-  })
+  document.addEventListener("mousemove", raycastListener)
   window.addEventListener('resize', updateResolution);
-}
-const setMouseTarget = t => {
-  if ((!t && !currentMouseTarget) || (t && currentMouseTarget && currentMouseTarget.object.uuid === t.object.uuid)) {
-    print("No new target and no current target OR new target is already set")
-    return; //Do nothing
-  }
-  if (!t && currentMouseTarget) {
-    print("No new target.. resetting old target resetting old target material");
-    currentMouseTarget.object.material = currentMouseTarget.object.userData.oldMaterial; //reset material
-    currentMouseTarget = null; //reset
-    return
-  }
-  if (t && currentMouseTarget) {
-    print("New target is set... resetting old target material")
-    currentMouseTarget.object.material = currentMouseTarget.object.userData.oldMaterial; //reset material
-    currentMouseTarget = t; //set new object
-    t.object.userData.oldMaterial = t.object.material; //store material for later
-    return
-  }
-  if (t && !currentMouseTarget) {
-    print("New target is set.. oldMaterial:")
-    currentMouseTarget = t; //set new object
-    t.object.userData.oldMaterial = t.object.material; //store material for later
-    return
-  }
-  printErr("Oh No! setMouseTarget didn't seem to find it")
-
 }
 const updateResolution = () => {
   updateScreenResolution()
@@ -84,7 +50,7 @@ const animate = ms => {
   //Move player
   calculatePlayerMove(delta || 0);
   //Update LOD objects to show correct detail
-  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void(0))
+  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
   //Draw & Re-call//
   requestAnimationFrame(animate);
   renderer.clear()
