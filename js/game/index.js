@@ -3,7 +3,7 @@ import { Planet, StarCloud } from './models';
 import player, { camera, calculatePlayerMove, keyboard, keyboardListeners, playerGUI, setGUIRenderer } from './player';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution, print, printErr } from './util';
 import * as Socket from './websocket/';
-import { currentMouseTarget, raycastListener } from './raycast';
+import * as mouse from './raycast';
 import { map, loadJsonToMap } from './map';
 import jsonData from './fakeData.json';
 /*######Debug######*/
@@ -22,7 +22,7 @@ let mso = 0;
 const addEventListeners = () => {
   document.addEventListener("keydown", keyboardListeners._keyDown);
   document.addEventListener("keyup", keyboardListeners._keyUp);
-  document.addEventListener("mousemove", raycastListener)
+  document.addEventListener("mousemove", mouse.listener)
   window.addEventListener('resize', updateResolution);
 }
 const updateResolution = () => {
@@ -41,8 +41,8 @@ const addObjToScene = obj => {
 const animate = ms => {
   let delta = (ms - mso) / 1000
   mso = ms;
-  if (currentMouseTarget) {
-    currentMouseTarget.object.material = new THREE.MeshBasicMaterial({
+  if (mouse.target) {
+    mouse.target.object.material = new THREE.MeshBasicMaterial({
       color: 0xff00ff,
       wireframe: false
     })

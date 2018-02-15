@@ -6,37 +6,37 @@ import { map } from './map'
 const raycaster = new THREE.Raycaster()
 const mouse = new THREE.Vector2()
 
-export let currentMouseTarget;
+export let target;
 
 const setNewTarget = t => {
   t.object.userData.oldMaterial = t.object.material; //store material for later
-  currentMouseTarget = t
+  target = t
 }
 const resetOldTarget = () => {
-  currentMouseTarget.object.material = currentMouseTarget.object.userData.oldMaterial; //reset material
-  currentMouseTarget = null;
+  target.object.material = target.object.userData.oldMaterial; //reset material
+  target = null;
 }
 
-export const raycastListener = event => {
+export const listener = event => {
   mouse.x = (event.clientX / SCREEN_WIDTH) * 2 - 1;
   mouse.y = -(event.clientY / SCREEN_HEIGHT) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
-  setMouseTarget(raycaster.intersectObjects(map.objects)[0])
+  handleMouseTarget(raycaster.intersectObjects(map.objects)[0])
 }
-const setMouseTarget = t => {
-  if ((!t && !currentMouseTarget) || (t && currentMouseTarget && currentMouseTarget.object.uuid === t.object.uuid)) {
+const handleMouseTarget = t => {
+  if ((!t && !target) || (t && target && target.object.uuid === t.object.uuid)) {
     return print("No new target and no current target OR new target is already set")
   }
-  if (!t && currentMouseTarget) {
+  if (!t && target) {
     resetOldTarget()
     return print("No new target.. cleared old target, reset old target material");
   }
-  if (t && currentMouseTarget) {
+  if (t && target) {
     resetOldTarget()
     setNewTarget(t)
     return print("New target is set... reset old target")
   }
-  if (t && !currentMouseTarget) {
+  if (t && !target) {
     setNewTarget(t)
     return print("New target is set..")
   }
