@@ -3,6 +3,7 @@ import { Planet, StarCloud } from './models';
 import player, { camera, calculatePlayerMove, keyboard, keyboardListeners, playerGUI, setGUIRenderer } from './player';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, kmToM, updateScreenResolution, print, printErr } from './util';
 import * as Socket from './websocket/';
+import * as config from './config';
 import * as mouse from './raycast';
 import { map, loadJsonToMap } from './map';
 import jsonData from './fakeData.json';
@@ -87,10 +88,13 @@ const init = gameContainer => {
 }
 const run = async token => {
   let gameContainer = document.getElementById('game-container')
-  Socket.subscribe("Request-Authentication", () => Socket.sendMessage("Authentication", token))
-  Socket.subscribe("Authenticated", () => console.log("Socket connection authenticated"))
-  Socket.subscribe("Authentication-Refused", () => console.log("Socket refused authentication"))
-  Socket.connect();
+  player.userData.authenticationKey = token;
+  await Socket.getMessageTypes();
+  let msg = config.socket.messages
+  Socket.subscribe(msg.server.requestAuth, () => Socket.sendMessage(msg.client.sendAuth, token))
+  Socket.subscribe(msg.server.acceptAuth, () => console.log("Socket connection authenticated"))
+  Socket.subscribe(msg.server.refuseAuth, () => console.log("Socket refused authentication"))
+  await Socket.connect();
   init(gameContainer)
   // loadJsonToMap({
   //   player: user

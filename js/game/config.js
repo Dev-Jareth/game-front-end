@@ -5,7 +5,7 @@ export const settings = {
   debugMode: false
 }
 export const socket = {
-
+  setMessages : obj=> socket.messages = obj,
 }
 export const planet = {
   lod: [{

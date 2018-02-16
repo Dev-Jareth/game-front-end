@@ -4,6 +4,7 @@ const httpMethods = Object.freeze({ POST: 'post', GET: 'get' })
 export default {
   url: {
     login: { path: `${baseUrl}/api/login`, method: httpMethods.POST },
-    checkLogin: { path: `${baseUrl}/api/secure/test`, method: httpMethods.GET }
+    checkLogin: { path: `${baseUrl}/api/secure/test`, method: httpMethods.GET },
+    requestSocketMessageTypes: { path: `${baseUrl}/api/secure/socket-message-types`, method: httpMethods.GET }
   }
 }

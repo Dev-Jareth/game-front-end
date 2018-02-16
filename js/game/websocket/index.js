@@ -1,15 +1,24 @@
 import PubSub from 'pubsub-js';
+import axios from 'axios';
+import player from '../player';
 import { print, printErr } from '../util';
-import { baseSocketUrl } from '../config';
+import { baseSocketUrl, socket } from '../config';
+import config from '../../config';
+const req = config.url.requestSocketMessageTypes;
 var ws;
-export const connect = () => {
+export const connect = async () => {
+  if (!socket.messages) await getMessageTypes()
   ws = new WebSocket(baseSocketUrl);
   ws.onerror = () => printErr('WebSocket error');
   ws.onopen = () => print('WebSocket connection established');
   ws.onclose = () => print('WebSocket connection closed');
   ws.onmessage = handleMessage;
 }
-
+export const getMessageTypes = async () => {
+  const handle = f => (v => f(v.data));
+  await axios[req.method](req.path, { headers: { token: player.userData.authenticationKey } })
+  .then(handle(socket.setMessages))
+}
 export const sendMessage = (k, v = false) => ws.send(JSON.stringify({
   [k]: v
 }))
