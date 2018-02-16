@@ -24,6 +24,7 @@ const handleMessage = message => {
   }
 }
 const handleAxios = f => (v => f(v.data));
+const errorAxios = e=>{throw e}
 const isMessage = (cs,msg)=>Boolean(Object.keys(socket.messages[cs]).find(key=>socket.messages[cs][key] == msg));
 const isServerMessage = msg=> isMessage('server',msg);
 const isClientMessage = msg=> isMessage('client',msg);
@@ -38,7 +39,7 @@ export const connect = async () => {
   ws.onclose = () => print('WebSocket connection closed');
   ws.onmessage = handleMessage;
 }
-export const getMessageTypes = async () => await axios[req.method](req.path, { headers: { token: player.userData.authenticationKey } }).then(handleAxios(socket.setMessages))
+export const getMessageTypes = async () => await axios[req.method](req.path, { headers: { token: player.userData.authenticationKey } }).then(handleAxios(socket.setMessages)).catch(errorAxios)
 
 export const sendMessage = (k, v = false) => isClientMessage(k)?ws.send(JSON.stringify({ [k]: v })):notMessage(k,true);
 export const subscribe = (key, callback) => isServerMessage(key)? PubSub.subscribe(key, (a, b) => callback(b)) : notMessage(key,false);
