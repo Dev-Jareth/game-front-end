@@ -76,7 +76,7 @@ const init = gameContainer => {
   })))
   scene.add(new THREE.AmbientLight(0x404040, 0.5));
   scene.add(new THREE.PointLight());
-  scene.add(boundingBox);
+  // scene.add(boundingBox);
   scene.add(StarCloud({
     density: 0.001,
     coords: {
