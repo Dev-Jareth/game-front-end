@@ -39,9 +39,11 @@ const loadAsteroidBelts = belts => {
 }
 const loadPlayer = player => {
   if (!player) return print("planets was not defined");
-  convertCoords(player.unit, player.coords)
-  map.player.coords.set(player.coords)
-  map.player.rotation.set(player.rotation)
+  convertCoords("km", player.position)
+  let {position, rotation, ...rest} = player
+  map.player.player.position.set(player.position.x,player.position.y,player.position.z)
+  map.player.player.rotation.set(player.rotation.x,player.rotation.y,player.rotation.z)
+  map.player.player.userData = {...map.player.player.userData, ...rest }
 
 }
 const convertRadius = planet => {

@@ -92,8 +92,9 @@ const run = async token => {
   await Socket.getMessageTypes();
   let msg = config.socket.messages
   Socket.subscribe(msg.server.requestAuth, () => Socket.sendMessage(msg.client.sendAuth, token))
-  Socket.subscribe(msg.server.acceptAuth, () => console.log("Socket connection authenticated"))
+  Socket.subscribe(msg.server.acceptAuth, () => Socket.sendMessage(msg.client.requestPlayerData))
   Socket.subscribe(msg.server.refuseAuth, () => console.log("Socket refused authentication"))
+  Socket.subscribe(msg.server.sendPlayerData, player=>loadJsonToMap({player}))
   await Socket.connect();
   init(gameContainer)
   // loadJsonToMap({
