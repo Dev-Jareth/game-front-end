@@ -9,12 +9,11 @@ export const loadJsonToMap = json => {
 const loadPlanets = planets => {
   if (!(planets instanceof Array)) return print("planets was not of Array");
   planets.forEach(planet => {
-    convertCoords(planet.unit, planet.coords)
-    convertRadius(planet)
+    convertCoords("km", planet.coords)
     map.objects.push(new Planet({
-      radius: planet.radius,
+      radius: convertRadius(planet),
       position: planet.coords,
-      category: planet.class
+      category: planet.classification
     }))
   })
 }
@@ -40,17 +39,13 @@ const loadAsteroidBelts = belts => {
 const loadPlayer = player => {
   if (!player) return print("planets was not defined");
   convertCoords("km", player.position)
-  let {position, rotation, ...rest} = player
-  map.player.player.position.set(player.position.x,player.position.y,player.position.z)
-  map.player.player.rotation.set(player.rotation.x,player.rotation.y,player.rotation.z)
-  map.player.player.userData = {...map.player.player.userData, ...rest }
+  let { position, rotation, ...rest } = player
+  map.player.player.position.set(player.position.x, player.position.y, player.position.z)
+  map.player.player.rotation.set(player.rotation.x, player.rotation.y, player.rotation.z)
+  map.player.player.userData = { ...map.player.player.userData, ...rest }
 
 }
-const convertRadius = planet => {
-  if (planet.unit === "km") {
-    planet.radius = kmToM(planet.radius)
-  }
-}
+const convertRadius = planet => kmToM(planet.radius)
 const convertCoords = (unit, coords) => {
   if (unit === "km") {
     let c = coords

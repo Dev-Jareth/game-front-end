@@ -51,7 +51,7 @@ const animate = ms => {
   //Move player
   calculatePlayerMove(delta || 0);
   //Update LOD objects to show correct detail
-  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void (0))
+  map.objects.forEach(obj => obj instanceof THREE.LOD ? obj.update(camera) : void(0))
   //Draw & Re-call//
   requestAnimationFrame(animate);
   renderer.clear()
@@ -86,6 +86,10 @@ const init = gameContainer => {
     }
   }))
 }
+const loadToMap = data => {
+  loadJsonToMap(data);
+  loadMap()
+}
 const run = async token => {
   let gameContainer = document.getElementById('game-container')
   player.userData.authenticationKey = token;
@@ -94,14 +98,17 @@ const run = async token => {
   Socket.subscribe(msg.server.requestAuth, () => Socket.sendMessage(msg.client.sendAuth, token))
   Socket.subscribe(msg.server.acceptAuth, () => Socket.sendMessage(msg.client.requestPlayerData))
   Socket.subscribe(msg.server.refuseAuth, () => console.log("Socket refused authentication"))
-  Socket.subscribe(msg.server.sendPlayerData, player=>loadJsonToMap({player}))
+  Socket.subscribe(msg.server.sendPlayerData, player => loadJsonToMap({ player }))
+  Socket.subscribe(msg.server.sendMap, loadToMap)
   await Socket.connect();
+  Socket.sendMessage(msg.client.requestMap)
+
   init(gameContainer)
   // loadJsonToMap({
   //   player: user
   // });
-  loadJsonToMap(jsonData);
-  loadMap();
+  // loadJsonToMap(jsonData);
+  // loadMap();
   addEventListeners();
   setGUIRenderer(renderer)
   playerGUI.init();
