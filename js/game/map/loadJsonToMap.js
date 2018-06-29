@@ -1,4 +1,5 @@
 import { map } from '.';
+import PLAYER from '../player';
 import { kmToM, print } from '../util';
 import { Asteroid, AsteroidBelt, Planet } from '../models';
 
@@ -48,9 +49,9 @@ const loadPlayer = (player) => {
 	if (!player) return print('planets was not defined');
 	convertCoords('km', player.position);
 	const { position, rotation, ...rest } = player;
-	map.player.player.position.set(player.position.x, player.position.y, player.position.z);
-	map.player.player.rotation.set(player.rotation.x, player.rotation.y, player.rotation.z);
-	map.player.player.userData = { ...map.player.player.userData, ...rest };
+	PLAYER.position.set(player.position.x, player.position.y, player.position.z);
+	PLAYER.rotation.set(player.rotation.x, player.rotation.y, player.rotation.z);
+	PLAYER.userData = { ...PLAYER.userData, ...rest };
 
 	return null;
 };

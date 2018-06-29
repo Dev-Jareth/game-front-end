@@ -16,7 +16,6 @@ const renderer = new THREE.WebGLRenderer({
 	logarithmicDepthBuffer: true,
 });
 renderer.autoClear = false;
-map.player.player = PLAYER; // TODO: Depricate map.player.player
 let mso = 0;
 // Functions
 const updateResolution = () => {

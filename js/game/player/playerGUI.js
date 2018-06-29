@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { SCREEN } from '../util';
 import { map } from '../map';
+import PLAYER from '.';
 
 let renderer;
 export const setGUIRenderer = (givenRenderer) => { renderer = givenRenderer; };
@@ -32,11 +33,11 @@ export const playerGUI = {
 		entities.axis.userData.setPosition = () => playerGUI.entities.axis.position.set(SCREEN.WIDTH * 9 / 10 + SCREEN.HEIGHT / 20, SCREEN.HEIGHT * 8 / 10 + SCREEN.HEIGHT / 20, 0);
 		entities.velocity.userData.setPosition = () => playerGUI.entities.velocity.position.set(SCREEN.WIDTH * 1 / 10, SCREEN.HEIGHT * 9 / 10, 0);
 		entities.axis.userData.update = () => {
-			playerGUI.entities.axis.rotation.copy(map.player.player.rotation);
+			playerGUI.entities.axis.rotation.copy(PLAYER.rotation);
 		};
 		entities.velocity.userData.update = () => {
 			const { text } = playerGUI.entities.velocity.geometry.parameters;
-			const { velocity } = map.player.player.userData.physics;
+			const { velocity } = PLAYER.userData.physics;
 			if (text !== velocity) {
 				playerGUI.entities.velocity.geometry = new THREE.TextGeometry(velocity, {
 					font,
