@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import camera from './camera';
+import SkyBox from './skybox';
 
 const loader = new THREE.ObjectLoader();
 
@@ -12,5 +13,6 @@ camera.position.y = 5;
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 const playerLight = new THREE.PointLight();
 playerLight.position.z = -5;
-player.add(camera, playerLight);
+player.skybox = SkyBox();
+player.add(camera, playerLight, player.skybox);
 export default player;
