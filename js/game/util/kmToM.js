@@ -1,1 +1,1 @@
-export const kmToM = km => km * 1000;
+export default km => km * 1000;

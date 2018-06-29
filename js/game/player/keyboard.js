@@ -1,13 +1,9 @@
-const generateKeyboard = array => {
-  let response = {};
-  array.forEach(el => (response = {
-    ...response,
-    [el]: {
-      pressed: false,
-      rate: 0,
-      serverState: false
-    }
-  }), this);
-  return response;
+const args = {
+	pressed: false,
+	rate: 0,
+	serverState: false,
 };
-export const keyboard = generateKeyboard(["w", "a", "s", "d", "q", "e", "space", "shift"]);
+const generateKeyboard = array => array.reduce((obj, el) => {
+	return { ...obj, [el]: { ...args } };
+}, {});
+export default generateKeyboard(['w', 'a', 's', 'd', 'q', 'e', 'space', 'shift']);

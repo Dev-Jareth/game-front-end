@@ -1,4 +1,4 @@
-export { Asteroid } from './Asteroid';
-export { AsteroidBelt } from './AsteroidBelt';
-export { Planet } from './Planet';
-export { StarCloud } from './StarCloud';
+export { default as Asteroid } from './Asteroid';
+export { default as AsteroidBelt } from './AsteroidBelt';
+export { default as Planet } from './Planet';
+export { default as StarCloud } from './StarCloud';

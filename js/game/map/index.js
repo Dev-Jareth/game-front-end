@@ -1,2 +1,2 @@
-export { map } from "./map"
-export { loadJsonToMap } from "./loadJsonToMap"
+export { default as map } from './map';
+export { default as loadJsonToMap } from './loadJsonToMap';

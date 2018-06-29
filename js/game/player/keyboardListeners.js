@@ -1,16 +1,16 @@
-import { keyboard } from './';
+import { keyboard } from '.';
 
-export const _keyDown = e => {
-  let key = e.key === " " ? "space" : e.key.toLowerCase();
-  // keyboard[key] ? (keyboard[key].pressed = true) : void 0;
-  keyboard[key] ? (keyboard[key].serverState = true) : void 0;
+export const onKeyDown = (e) => {
+	const key = keyboard[e.key === ' ' ? 'space' : e.key.toLowerCase()];
+	if (key) key.serverState = true; // ignore server
+	// if (key) key.pressed = true;
 };
-export const _keyUp = e => {
-  let key = e.key === " " ? "space" : e.key.toLowerCase();
-  // keyboard[key] ? (keyboard[key].pressed = false) : void 0;
-  keyboard[key] ? (keyboard[key].serverState = false) : void 0;
+export const onKeyUp = (e) => {
+	const key = keyboard[e.key === ' ' ? 'space' : e.key.toLowerCase()];
+	if (key) key.serverState = false;// ignore server
+	// if (key) key.pressed = false;
 };
-export const keyboardListeners = {
-  _keyUp,
-  _keyDown
-}
+export default {
+	keyUpListener: onKeyUp,
+	keyDownListener: onKeyDown,
+};

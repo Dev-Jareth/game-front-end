@@ -1,8 +1,16 @@
+class Screen {
 
-export var SCREEN_WIDTH = 0
-export var SCREEN_HEIGHT = 0
+	constructor() {
+		this.WIDTH = 0;
+		this.HEIGHT = 0;
+		this.updateResolution();
+	}
 
-export const updateScreenResolution = () => {
-  SCREEN_WIDTH = window.innerWidth;
-  SCREEN_HEIGHT = window.innerHeight;
+	updateResolution() {
+  	this.WIDTH = window.innerWidth;
+  	this.HEIGHT = window.innerHeight;
+	}
+
 }
+
+export default new Screen();

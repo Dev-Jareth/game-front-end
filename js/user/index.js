@@ -1,2 +1,2 @@
 export { user } from './user';
-export { login } from './login';
+export { default as login } from './login';
