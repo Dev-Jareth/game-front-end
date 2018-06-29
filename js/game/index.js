@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { StarCloud } from './models';
+import './threeExtensions';
 import PLAYER, { camera, calculatePlayerMove, keyboardListeners, playerGUI, setGUIRenderer } from './player';
 import { SCREEN, kmToM, print, printErr } from './util';
 import * as Socket from './websocket';
