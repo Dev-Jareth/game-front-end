@@ -1,43 +1,34 @@
 import * as THREE from 'three';
-import { SCREEN, print, printErr } from './util';
+import { getDisplayParent, SCREEN, print } from './util';
 import { camera } from './player';
 import { map } from './map';
 
+const log = t => print(`||RayCaster|| ${t}`);
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-let target;
+let target = null;
 
 export const getTarget = () => target;
 
-const setNewTarget = (t) => {
-	// t.object.userData.oldMaterial = t.object.material; // store material for later
+const setTarget = (t) => {
 	target = t;
-	target.object.userData.oldMaterial = t.object.material; // store material for later
 };
-const resetOldTarget = () => {
-	target.object.material = target.object.userData.oldMaterial; // reset material
+const resetTarget = () => {
 	target = null;
 };
 
 const handleMouseTarget = (t) => {
-	if ((!t && !target) || (t && target && target.object.uuid === t.object.uuid)) {
-		return print('No new target and no current target OR new target is already set');
+	const obj = t ? getDisplayParent(t.object) : null;
+	if (obj) {
+		setTarget(obj);
+		return log('Target found');
 	}
-	if (!t && target) {
-		resetOldTarget();
-		return print('No new target.. cleared old target, reset old target material');
+	if (target) {
+		resetTarget();
+		return log('Removing Target');
 	}
-	if (t && target) {
-		resetOldTarget();
-		setNewTarget(t);
-		return print('New target is set... reset old target');
-	}
-	if (t && !target) {
-		setNewTarget(t);
-		return print('New target is set..');
-	}
-	return printErr("Oh No! setMouseTarget didn't seem to find it");
+	return log('No Target');
 };
 
 export const listener = (event) => {

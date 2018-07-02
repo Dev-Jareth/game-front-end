@@ -4,7 +4,6 @@ import PLAYER, { camera, calculatePlayerMove, keyboardListeners, playerGUI, setG
 import { SCREEN, kmToM, print, printErr } from './util';
 import * as Socket from './websocket';
 import * as config from './config';
-import * as mouse from './raycast';
 import { map, loadJsonToMap } from './map';
 /* ######Debug###### */
 // window.map = map;
@@ -40,11 +39,6 @@ const loadMap = () => {
 const animate = (ms) => {
 	const delta = (ms - mso) / 1000;
 	mso = ms;
-	if (mouse.getTarget()) {
-		mouse.getTarget().object.material = new THREE.MeshBasicMaterial({
-			color: 0xff00ff,
-			wireframe: false,
-		});
 	}
 	// Move player
 	calculatePlayerMove(delta || 0);
