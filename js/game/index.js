@@ -16,7 +16,6 @@ const renderer = new THREE.WebGLRenderer({
 	logarithmicDepthBuffer: true,
 });
 renderer.autoClear = false;
-let mso = 0;
 // Functions
 const updateResolution = () => {
 	SCREEN.updateResolution();
@@ -37,15 +36,13 @@ const loadMap = () => {
 	map.objects.forEach(addObjToScene);
 	scene.add(PLAYER);
 };
-const animate = (ms) => {
-	const delta = (ms - mso) / 1000;
-	mso = ms;
+const animate = () => {
 	// Draw & Re-call//
 	window.requestAnimationFrame(animate);
 	renderer.clear();
 	renderer.render(scene, camera);
 	renderer.clearDepth();
-	playerGUI.update(ms);
+	playerGUI.update();
 };
 const init = (gameContainer) => {
 	updateResolution();

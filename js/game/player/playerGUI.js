@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { SCREEN } from '../util';
-import { map } from '../map';
 import PLAYER from '.';
 
 let renderer;
+const clock = new THREE.Clock();
 export const setGUIRenderer = (givenRenderer) => { renderer = givenRenderer; };
 export const playerGUI = {
-	init: async (parent) => {
+	init: async () => {
 		const loadFont = font => new Promise((resolve, reject) => {
 			const loader = new THREE.FontLoader();
 			loader.load(font, resolve, null, reject);
@@ -51,14 +51,14 @@ export const playerGUI = {
 
 	},
 	render: () => renderer.render(playerGUI.scene, playerGUI.camera),
-	update: (ms) => {
+	update: () => {
 
 		playerGUI.entities.axis.userData.setPosition();
 		playerGUI.entities.axis.userData.update();
 		playerGUI.entities.velocity.userData.setPosition();
 		// Restricted Updates
-		if ((ms - playerGUI.lastRestrictedUpdate) / 1000 >= playerGUI.restrictedUpdateRate) {
-			playerGUI.lastRestrictedUpdate = ms;
+		if ((clock.getElapsedTime() - playerGUI.lastRestrictedUpdate) >= playerGUI.restrictedUpdateRate) {
+			playerGUI.lastRestrictedUpdate = clock.getElapsedTime();
 			playerGUI.entities.velocity.userData.update();
 		}
 		playerGUI.updateCamera();
