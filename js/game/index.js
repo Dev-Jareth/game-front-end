@@ -40,8 +40,6 @@ const loadMap = () => {
 const animate = (ms) => {
 	const delta = (ms - mso) / 1000;
 	mso = ms;
-	// Update LOD objects to show correct detail
-	map.objects.forEach(obj => (obj instanceof THREE.LOD ? obj.update(camera) : undefined));
 	// Draw & Re-call//
 	window.requestAnimationFrame(animate);
 	renderer.clear();
