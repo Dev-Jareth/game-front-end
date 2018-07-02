@@ -16,11 +16,13 @@ const convertCoords = (unit, coords) => {
 const loadPlanets = (planets) => {
 	if (!(planets instanceof Array)) return print('planets was not of Array');
 	planets.forEach((planet) => {
+		console.log('ADDING PLANET', planet);
 		convertCoords('km', planet.coords);
 		map.objects.push(new Planet({
 			radius: convertRadius(planet),
 			position: planet.coords,
 			category: planet.classification,
+			name: planet.name,
 		}));
 	});
 	return null;

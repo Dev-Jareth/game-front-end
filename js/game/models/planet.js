@@ -24,6 +24,7 @@ const Planet = (_args) => {
 	assign(args, defaultArgs, _args);
 	const pclass = config.categories[args.category];
 	const response = new THREE.LOD();
+	response.name = args.name;
 	// generateMesh(args.radius, 60, pclass.color)
 	const { radius } = args;
 	const lvlMesh = dtl => generateMesh(radius, calcDetail(radius, dtl), pclass.color);
