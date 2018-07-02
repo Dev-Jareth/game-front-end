@@ -11,8 +11,9 @@ loader.load('/models/sg-light-destroyer-threejs/sg-light-destroyer.json', model 
 camera.position.z = -15;
 camera.position.y = 5;
 camera.lookAt(new THREE.Vector3(0, 0, 0));
+player.camera = camera;
 const playerLight = new THREE.PointLight();
 playerLight.position.z = -5;
 player.skybox = SkyBox();
-player.add(camera, playerLight, player.skybox);
+player.add(player.camera, playerLight, player.skybox);
 export default player;
