@@ -4,6 +4,7 @@ import PLAYER, { camera, calculatePlayerMove, keyboardListeners, playerGUI, setG
 import { SCREEN, kmToM, print, printErr } from './util';
 import * as Socket from './websocket';
 import * as config from './config';
+import * as mouse from './raycast';
 import { map, loadJsonToMap } from './map';
 /* ######Debug###### */
 // window.map = map;
@@ -39,9 +40,6 @@ const loadMap = () => {
 const animate = (ms) => {
 	const delta = (ms - mso) / 1000;
 	mso = ms;
-	}
-	// Move player
-	calculatePlayerMove(delta || 0);
 	// Update LOD objects to show correct detail
 	map.objects.forEach(obj => (obj instanceof THREE.LOD ? obj.update(camera) : undefined));
 	// Draw & Re-call//

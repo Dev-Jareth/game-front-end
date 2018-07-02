@@ -1,6 +1,10 @@
-import PLAYER, { keyboard } from '.';
+import { Clock } from 'three';
+import { keyboard } from '.';
+import PLAYER from './Player';
 
-export default (delta) => {
+const clock = new Clock();
+const calculatePlayerMovement = () => {
+	const delta = clock.getDelta();
 	PLAYER.userData.physics = PLAYER.userData.physics || {};
 	const playerPhysics = PLAYER.userData.physics;
 	// requestPlayerMove();
@@ -54,3 +58,11 @@ export default (delta) => {
 	playerPhysics.rotation.y = q.rate - e.rate;
 	playerPhysics.rotation.z = a.rate - d.rate;
 };
+
+// PLAYER.onBeforeRender = calculatePlayerMovement;
+PLAYER.updateMatrixWorld = (force) => {
+	calculatePlayerMovement();
+	PLAYER.constructor.prototype.updateMatrixWorld.call(PLAYER, force);
+};
+
+export default calculatePlayerMovement;
